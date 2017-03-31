@@ -4,6 +4,8 @@
 #include "Common.h"
 using namespace std;
 
+#define isPlayerChar(x, y) (x==A && (isupper(y) || isspace(y)) || (x==B && (islower(y) || isspace(y))))
+
 class BattleBoard
 {
 public:
@@ -52,11 +54,19 @@ public:
 		}
 	}
 
-	BattleBoard(char** initBoard, int R = 10, int C = 10)
+	BattleBoard(const char** initBoard, int R = 10, int C = 10)
 	{
 		this->R = R;
 		this->C = C;
-		this->board = initBoard;
+
+		//copy the init board to  new board member
+		this->board = new char*[this->R];
+		for (int i = 0; i < this->C; i++) this->board[i] = new char[this->C];
+		
+		for (int i = 0; i < this->R; i++)
+		{
+				this->board[i] = _strdup(initBoard[i]);
+		}
 		if (!this->isBoardValid())
 		{
 			// handle invalid board

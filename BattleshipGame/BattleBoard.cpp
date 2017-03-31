@@ -1,7 +1,5 @@
 #include "BattleBoard.h"
 
-#define isPlayerChar(x, y) (x==A && (isupper(y) || isspace(y)) || (x==B && (islower(y) || isspace(y))))
-
 bool BattleBoard::isBoardValid()
 {
 	return true;

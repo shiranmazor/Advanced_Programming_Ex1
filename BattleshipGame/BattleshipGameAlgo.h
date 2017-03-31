@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 #include "IBattleshipGameAlgo.h"
 #include "BattleBoard.h"
 using namespace std;
@@ -11,9 +12,11 @@ class BattleshipGameAlgo:IBattleshipGameAlgo
 {
 public:
 	Player playerName;
-	BattleBoard* board ;
+	BattleBoard* playerBoard ;
 	string attackFilePath;
 	ifstream attackFile;
+	vector<pair<char, int>> boardTools;
+
 
 	//constructor
 	BattleshipGameAlgo(Player playerName, string attackFilePath)
@@ -32,7 +35,7 @@ public:
 	}
 	~BattleshipGameAlgo()
 	{
-		delete board;
+		delete playerBoard;
 	}
 
 	virtual void setBoard(const char** board, int numRows, int numCols) override;

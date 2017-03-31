@@ -130,9 +130,11 @@ bool CheckValidPath(vector<string> gameFiles, string path)
 void PlayGame(vector<string> gameFiles)
 {
 	Player currentPlayer = A;
+	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
 	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(A, gameFiles[1]);
+	playerA->setBoard(const_cast<const char**>(mainBoard->getPlayerBoard(A)), mainBoard->R, mainBoard->C);
 }
 
 int main(int argc, char **argv)
@@ -160,6 +162,8 @@ int main(int argc, char **argv)
 		cout << "Error game files are missing, Exiting game" << endl;
 		return -1;
 	}
+	
+	PlayGame(gameFiles);
 
 	
 }
