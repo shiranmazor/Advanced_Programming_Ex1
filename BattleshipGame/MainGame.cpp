@@ -1,13 +1,20 @@
 #include "BattleshipGameAlgo.h"
 #include "Game.h"
 
-std::string getexepath()
+/*
+ * get current working directory path
+ */
+
+bool dirExists(const std::string& dirName_in)
 {
-	char result[MAX_PATH];
-	wchar_t wtext[MAX_PATH];
-	mbstowcs(wtext, result, strlen(result) + 1);//Plus null
-	LPWSTR ptr = wtext;
-	return std::string(result, GetModuleFileName(NULL, ptr, MAX_PATH));
+	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
+	if (ftyp == INVALID_FILE_ATTRIBUTES)
+		return false;  //something is wrong with your path!
+
+	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+		return true;   // this is a directory!
+
+	return false;    // this is not a directory!
 }
 
 void getGameFiles(string folder, vector<string> & gameFiles)
@@ -15,6 +22,8 @@ void getGameFiles(string folder, vector<string> & gameFiles)
 	WIN32_FIND_DATA search_data;
 	std::wstring stemp;
 	HANDLE handle;
+
+	
 	memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
 
 	//start with sboard files
@@ -57,9 +66,9 @@ void getGameFiles(string folder, vector<string> & gameFiles)
 		}
 	}
 
-	//start with attack-a files
+	//start with attack-b files
 	string attackBPath = folder + "\\*.attack-b";
-	stemp = std::wstring(attackAPath.begin(), attackAPath.end());
+	stemp = std::wstring(attackBPath.begin(), attackBPath.end());
 	LPCWSTR attackPathB = stemp.c_str();
 	handle = FindFirstFile(attackPathB, &search_data);
 
@@ -79,8 +88,42 @@ void getGameFiles(string folder, vector<string> & gameFiles)
 
 }
 
-bool CheckValidPath(vector<string> gameFiles)
+bool CheckValidPath(vector<string> gameFiles, string path)
 {
+	bool sboard=false, attacka=false, attackb=false;
+	if (gameFiles.size() == 3)
+		return true;
+	else
+	{
+		//check which file is missing and print message
+		vector<string>::iterator fileIt;
+		for (fileIt = gameFiles.begin(); fileIt != gameFiles.end(); ++fileIt)
+		{
+			if (fileIt->find("sboard") != std::string::npos)
+				sboard = true;
+			if (fileIt->find("attack-a") != std::string::npos)
+				attacka = true;
+			if (fileIt->find("attack-b") != std::string::npos)
+				attackb = true;
+			
+		}
+	}
+
+	if (!sboard)
+	{
+		cout << "Missing board file (*.sboard) looking in path:" + path << endl;
+		return false;
+	}
+	if (!attacka)
+	{
+		cout << "Missing attack file for player A (*.attack-a) looking in path:" + path << endl;
+		return false;
+	}
+	if (!attackb)
+	{
+		cout << "Missing attack file for player B (*.attack-b) looking in path:" + path << endl;
+		return false;
+	}
 	return true;
 }
 
@@ -91,20 +134,27 @@ int main(int argc, char **argv)
 	string path;
 	if (argc < 2)
 	{
-		//search files in working directory
-		path = getexepath();
+		//use working directory
+		_getcwd(the_path, 255);
+		path = std::string(the_path);
 	}
 	else
-	{
 		path = argv[1];
-	}
-	vector<string> gameFiles;
-	getGameFiles(argv[1], gameFiles);
-	if (!CheckValidPath(gameFiles))
+	if (!dirExists(path))
 	{
-		cout << "Error game files are missing, exiting game" << endl;
+		cout << "Wrong path:" + path << endl;
 		return -1;
 	}
+
+	//path is valid, continue
+	vector<string> gameFiles;
+	getGameFiles(argv[1], gameFiles);
+	if (!CheckValidPath(gameFiles,path))
+	{
+		cout << "Error game files are missing, Exiting game" << endl;
+		return -1;
+	}
+	//start game
 
 	
 }
