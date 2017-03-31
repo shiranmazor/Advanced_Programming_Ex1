@@ -9,4 +9,4 @@
 using namespace std;
 
 bool CheckValidPath(string gameFolder);
-vector<string> getGameFiles(string folder);
+void getGameFiles(string folder, vector<string> & gameFiles);
