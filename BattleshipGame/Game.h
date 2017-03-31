@@ -3,8 +3,14 @@
 #include <cstring>
 #include <direct.h>
 #include <vector>
+#include <windows.h>
+#include <stdio.h>
+
+
 
 using namespace std;
 
-bool CheckValidPath(string gameFolder);
-vector<string> getGameFiles(string folder);
+bool CheckValidPath(vector<string> gameFiles, string path);
+void getGameFiles(string folder, vector<string> & gameFiles);
+bool dirExists(const std::string& dirName_in);
+
