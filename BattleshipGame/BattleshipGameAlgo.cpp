@@ -4,7 +4,9 @@
 
 void BattleshipGameAlgo::setBoard(const char** board, int numRows, int numCols)
 {
-	
+	if (this->playerBoard != nullptr)
+		delete this->playerBoard; //avoid memory leak
+
 	this->playerBoard = new BattleBoard(board, numRows, numCols);
 
 	//init board tools member:

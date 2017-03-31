@@ -134,7 +134,10 @@ void PlayGame(vector<string> gameFiles)
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
 	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(A, gameFiles[1]);
-	playerA->setBoard(const_cast<const char**>(mainBoard->getPlayerBoard(A)), mainBoard->R, mainBoard->C);
+	  
+	char** playerBoard = mainBoard->getPlayerBoard(A);
+	playerA->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
+	delete playerBoard;//avoid memory leak
 }
 
 int main(int argc, char **argv)

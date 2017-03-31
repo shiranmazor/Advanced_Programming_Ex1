@@ -12,7 +12,7 @@ class BattleshipGameAlgo:IBattleshipGameAlgo
 {
 public:
 	Player playerName;
-	BattleBoard* playerBoard ;
+	BattleBoard* playerBoard = nullptr;
 	string attackFilePath;
 	ifstream attackFile;
 	vector<pair<char, int>> boardTools;
@@ -35,7 +35,8 @@ public:
 	}
 	~BattleshipGameAlgo()
 	{
-		delete playerBoard;
+		if (playerBoard != nullptr)
+			delete playerBoard;
 	}
 
 	virtual void setBoard(const char** board, int numRows, int numCols) override;
