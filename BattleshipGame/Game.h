@@ -8,5 +8,6 @@
 
 using namespace std;
 
-bool CheckValidPath(string gameFolder);
+bool CheckValidPath(vector<string> gameFiles);
 void getGameFiles(string folder, vector<string> & gameFiles);
+

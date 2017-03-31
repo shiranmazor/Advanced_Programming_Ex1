@@ -9,7 +9,7 @@ class BattleshipGameAlgo:IBattleshipGameAlgo
 {
 public:
 	string playerName;
-	BattleBoard board;
+	string* board = nullptr;
 	string attackFilePath;
 	ifstream attackFile;
 
@@ -34,6 +34,8 @@ public:
 		{
 			delete[] board;
 		}
+		
+
 	}
 
 	virtual void setBoard(const char** board, int numRows, int numCols) override;
