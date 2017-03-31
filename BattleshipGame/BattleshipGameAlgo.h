@@ -3,21 +3,18 @@
 #include <cstring>
 #include <fstream>
 #include "IBattleshipGameAlgo.h"
+#include "BattleBoard.h"
 using namespace std;
-enum Player { A,B };
-
 class BattleshipGameAlgo:IBattleshipGameAlgo
 {
 public:
-	Player playerName;
-	int R;
-	int C;
-	char** board = nullptr;
+	string playerName;
+	BattleBoard board;
 	string attackFilePath;
 	ifstream attackFile;
 
 	//constructor
-	BattleshipGameAlgo( Player playerName, string attackFilePath): R(10), C(10),board(NULL)
+	BattleshipGameAlgo( string playerName, string attackFilePath)
 	{
 		this->playerName = playerName;
 		this->attackFilePath = attackFilePath;
