@@ -127,13 +127,19 @@ bool CheckValidPath(vector<string> gameFiles, string path)
 	return true;
 }
 
-
+void PlayGame(vector<string> gameFiles)
+{
+	Player currentPlayer = A;
+	//create players object
+	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
+}
 
 int main(int argc, char **argv)
 {
 	string path;
 	if (argc < 2)
 	{
+		char the_path[256];
 		//use working directory
 		_getcwd(the_path, 255);
 		path = std::string(the_path);
@@ -145,7 +151,6 @@ int main(int argc, char **argv)
 		cout << "Wrong path:" + path << endl;
 		return -1;
 	}
-
 	//path is valid, continue
 	vector<string> gameFiles;
 	getGameFiles(argv[1], gameFiles);
@@ -154,7 +159,6 @@ int main(int argc, char **argv)
 		cout << "Error game files are missing, Exiting game" << endl;
 		return -1;
 	}
-	//start game
 
 	
 }

@@ -1,20 +1,22 @@
 #pragma once
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <fstream>
 #include "IBattleshipGameAlgo.h"
 #include "BattleBoard.h"
 using namespace std;
+
+
 class BattleshipGameAlgo:IBattleshipGameAlgo
 {
 public:
-	string playerName;
+	Player playerName;
 	BattleBoard* board ;
 	string attackFilePath;
 	ifstream attackFile;
 
 	//constructor
-	BattleshipGameAlgo( string playerName, string attackFilePath)
+	BattleshipGameAlgo(Player playerName, string attackFilePath)
 	{
 		this->playerName = playerName;
 		this->attackFilePath = attackFilePath;
