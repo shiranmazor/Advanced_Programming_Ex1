@@ -3,6 +3,8 @@
 #include <cstring>
 #include <direct.h>
 #include <vector>
+#include <windows.h>
+
 
 using namespace std;
 

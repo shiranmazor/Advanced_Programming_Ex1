@@ -1,6 +1,6 @@
 #include "BattleshipGameAlgo.h"
 #include "Game.h"
-#include <algorithm>
+
 
 void getGameFiles(string folder, vector<string> & gameFiles)
 {
@@ -50,19 +50,7 @@ void getGameFiles(string folder, vector<string> & gameFiles)
 	}
 
 }
-void getFilesList(string filePath, string extension, vector<string> & returnFileName)
-{
-	WIN32_FIND_DATA fileInfo;
-	HANDLE hFind;
-	string  fullPath = filePath + extension;
-	hFind = FindFirstFile(fullPath.c_str(), &fileInfo);
-	if (hFind != INVALID_HANDLE_VALUE) {
-		returnFileName.push_back(filePath + fileInfo.cFileName);
-		while (FindNextFile(hFind, &fileInfo) != 0) {
-			returnFileName.push_back(filePath + fileInfo.cFileName);
-		}
-	}
-}
+
 
 
 int main(int argc, char **argv)
@@ -76,5 +64,4 @@ int main(int argc, char **argv)
 		
 	}
 	
-
 }
