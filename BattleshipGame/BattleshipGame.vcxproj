@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="BattleBoard.h" />
     <ClInclude Include="BattleshipGameAlgo.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IBattleshipGameAlgo.h" />
     <ClInclude Include="stdafx.h" />
