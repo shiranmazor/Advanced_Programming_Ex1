@@ -32,10 +32,12 @@ public:
 		{
 			std::getline(boardFile, temp);
 			// copy C chars
-			if (temp.length >= this->C) temp.copy(this->board[i], this->C);
+			if (temp.length() >= this->C)
+				temp.copy(this->board[i], this->C);
+				
 			else {
-				temp.copy(this->board[i], temp.length);
-				for (int j = temp.length - 1; j < this->C; j++) this->board[i][j] = ' ';
+				temp.copy(this->board[i], temp.length());
+				for (int j = temp.length() - 1; j < this->C; j++) this->board[i][j] = ' ';
 			}
 
 			if (std::ifstream::eofbit){

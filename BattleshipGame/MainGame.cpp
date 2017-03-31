@@ -132,6 +132,7 @@ void PlayGame(vector<string> gameFiles)
 	Player currentPlayer = A;
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
+	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(A, gameFiles[1]);
 }
 
 int main(int argc, char **argv)
