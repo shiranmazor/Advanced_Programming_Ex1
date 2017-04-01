@@ -136,7 +136,7 @@ void PlayGame(vector<string> gameFiles)
 	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
-	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(A, gameFiles[1]);
+	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(A, gameFiles[2]);
 	  
 	char** playerBoard = NULL;
 	pair<int, int> attackMove;

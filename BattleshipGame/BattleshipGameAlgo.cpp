@@ -50,6 +50,20 @@ void BattleshipGameAlgo::setBoard(const char** board, int numRows, int numCols)
 
 std::pair<int, int> BattleshipGameAlgo::attack()
 {
+	//read first line from attack file
+	pair<int, int> attackMove;
+	string line;
+	if (getline(this->attackFile, line))
+	{
+	//remove whitespaces
+	//check valid positions
+		
+	}
+	else
+	{
+		//attack moves over
+		return std::pair<int, int>(-1, -1);
+	}
 	return std::pair<int, int>(0, 0);
 }
 void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, AttackResult result)
