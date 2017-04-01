@@ -2,9 +2,13 @@
 #include <string>
 #include <fstream>
 #include "Common.h"
+#include "IBattleshipGameAlgo.h"
 using namespace std;
 
 #define isPlayerChar(x, y) (x==A && (isupper(y) || isspace(y)) || (x==B && (islower(y) || isspace(y))))
+#define HitMarkA '*'
+#define HitMarkB '#'
+
 
 class BattleBoard
 {
@@ -85,5 +89,6 @@ public:
 	bool isBoardValid();
 	int CalcScore();
 	Player CheckVictory();
-	char** getPlayerBoard(Player player);
+	void getPlayerBoard(Player player, char** &pBoard);
+	AttackResult performGameMove(Player p, pair<int, int> move);
 };

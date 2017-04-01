@@ -4,7 +4,6 @@
 /*
  * get current working directory path
  */
-
 bool dirExists(const std::string& dirName_in)
 {
 	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
@@ -127,18 +126,62 @@ bool CheckValidPath(vector<string> gameFiles, string path)
 	return true;
 }
 
+
 void PlayGame(vector<string> gameFiles)
 {
+	//we starts with player A
 	Player currentPlayer = A;
+	bool gameOver = false;
+
 	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
 	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(A, gameFiles[1]);
 	  
-	char** playerBoard = mainBoard->getPlayerBoard(A);
-	playerA->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
-	delete playerBoard;//avoid memory leak
+	char** playerBoard = NULL;
+	pair<int, int> attackMove;
+	while (!gameOver)
+	{
+		//set current player board
+		mainBoard->getPlayerBoard(currentPlayer, playerBoard);
+		if (currentPlayer == A)
+		{
+			//set board to playerA
+			playerA->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
+			//get attack move
+			attackMove = playerA->attack();
+
+			//Todo:perform move
+			AttackResult moveRes = mainBoard->performGameMove(playerA->playerName, attackMove);
+
+			//notify both players on the moveAttak results
+			playerA->notifyOnAttackResult(A, attackMove.first, attackMove.second, moveRes);
+			playerB->notifyOnAttackResult(A, attackMove.first, attackMove.second, moveRes);
+			//Todo:check if playerA hit\sink then give another turn else swap players
+		}			
+		else
+		{
+			//set board to playerB
+			playerB->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
+			//get attack move
+			attackMove = playerB->attack();
+			//Todo:perform move
+
+			AttackResult moveRes = mainBoard->performGameMove(playerB->playerName, attackMove);
+
+			//notify both players on the moveAttak results
+			playerA->notifyOnAttackResult(B, attackMove.first, attackMove.second, moveRes);
+			playerB->notifyOnAttackResult(B, attackMove.first, attackMove.second, moveRes);
+			//Todo:check if playerA hit\sink then give another turn else swap players
+		}
+
+		
+	}
+	
+	if (playerBoard != NULL)
+		delete playerBoard;//avoid memory leak
 }
+
 
 int main(int argc, char **argv)
 {
