@@ -15,7 +15,6 @@ public:
 	BattleBoard* playerBoard = nullptr;
 	string attackFilePath;
 	ifstream attackFile;
-	vector<pair<char, int>> boardTools;
 
 
 	//constructor
@@ -42,4 +41,10 @@ public:
 	virtual void setBoard(const char** board, int numRows, int numCols) override;
 	virtual std::pair<int, int> attack() override;
 	virtual void notifyOnAttackResult(int player, int row, int col, AttackResult result) override;
+	/*
+	 *check if attack line is valid and contain indexes in range, one comma and doesn't contain 
+	 *white spacecs at the begining or end else return False
+	 *
+	 */
+	bool isAttackLineValid(string line);
 };

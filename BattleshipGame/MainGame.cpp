@@ -150,6 +150,9 @@ void PlayGame(vector<string> gameFiles)
 			playerA->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
 			//get attack move
 			attackMove = playerA->attack();
+			attackMove = playerA->attack();
+			attackMove = playerA->attack();
+			attackMove = playerA->attack();
 
 			//Todo:perform move
 			AttackResult moveRes = mainBoard->performGameMove(playerA->playerName, attackMove);
