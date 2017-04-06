@@ -7,6 +7,12 @@
 #include "BattleBoard.h"
 using namespace std;
 
+#define MyHitMark '*'
+#define OpHitMark '#'
+#define MyMissMark '~'
+#define OpMissMark '^'
+#define MySinkMark '!'
+#define OpSinkMark '?'
 
 class BattleshipGameAlgo:IBattleshipGameAlgo
 {

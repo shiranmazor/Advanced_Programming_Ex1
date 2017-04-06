@@ -136,8 +136,8 @@ void PlayGame(vector<string> gameFiles)
 	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
-	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(A, gameFiles[2]);
-	  
+	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(B, gameFiles[2]);
+	
 	char** playerBoard = NULL;
 	pair<int, int> attackMove;
 	while (!gameOver)
@@ -159,7 +159,7 @@ void PlayGame(vector<string> gameFiles)
 
 			//notify both players on the moveAttak results
 			playerA->notifyOnAttackResult(A, attackMove.first, attackMove.second, moveRes);
-			playerB->notifyOnAttackResult(A, attackMove.first, attackMove.second, moveRes);
+			playerB->notifyOnAttackResult(B, attackMove.first, attackMove.second, moveRes);
 			//Todo:check if playerA hit\sink then give another turn else swap players
 		}			
 		else
