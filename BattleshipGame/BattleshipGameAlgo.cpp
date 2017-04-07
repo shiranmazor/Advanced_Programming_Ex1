@@ -64,13 +64,13 @@ void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, Atta
 	if (currPlayerMove){
 		switch (result) {
 			case AttackResult::Miss:
-				this->playerBoard[row][col] = OpMissMark;
+				this->playerBoard->board[row][col] = OpMissMark;
 				break;
 			case AttackResult::Hit:
-				this->playerBoard[row][col] = OpHitMark;
+				this->playerBoard->board[row][col] = OpHitMark;
 				break;
 			case AttackResult::Sink:
-				this->playerBoard[row][col] = OpSinkMark; //TODO: mark all the other hits as sink as well
+				this->playerBoard->board[row][col] = OpSinkMark; //TODO: mark all the other hits as sink as well
 				break;
 			default:
 				//TODO: print err (unknown attackres)
@@ -80,13 +80,13 @@ void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, Atta
 	else{
 		switch (result) {
 		case AttackResult::Miss:
-			this->playerBoard[row][col] = MyMissMark;
+			this->playerBoard->board[row][col] = MyMissMark;
 			break;
 		case AttackResult::Hit:
-			this->playerBoard[row][col] = MyHitMark;
+			this->playerBoard->board[row][col] = MyHitMark;
 			break;
 		case AttackResult::Sink:
-			this->playerBoard[row][col] = MySinkMark; //TODO: mark all the other hits as sink as well
+			this->playerBoard->board[row][col] = MySinkMark; //TODO: mark all the other hits as sink as well
 			break;
 		default:
 			//TODO: print err (unknown attackres)
