@@ -35,8 +35,15 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 }
 
 AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
-{
-	AttackResult res = AttackResult::Hit;
-	return res;
+{	
+	char c = this->board[move[0]][move[1]];
+	if (!isspace(c) && isOppChar(p, c)){
+		this->board[move[0]][move[1]] = p == A ? HitMarkA : HitMarkB;
+		//TODO: add check for sink
+		return AttackResult::Hit;
+	}
+	else{
+		return AttackResult::Miss;
+	}
 }
 
