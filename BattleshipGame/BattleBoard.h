@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <fstream>
+#include <unordered_map>
 #include "Common.h"
 #include "IBattleshipGameAlgo.h"
 using namespace std;
@@ -8,6 +9,11 @@ using namespace std;
 #define isPlayerChar(x, y) (x==A && (isupper(y) || isspace(y)) || (x==B && (islower(y) || isspace(y))))
 #define HitMarkA '*'
 #define HitMarkB '#'
+
+char idx2ship[8] = { 'b', 'p', 'm', 'd', 'B', 'P', 'M', 'D' };
+std::unordered_map<char, int> ship2idx = {
+		{ 'b', 0 }, { 'p', 1 }, { 'm', 2 }, { 'd', 3 }, { 'B', 4 }, { 'P', 5 }, { 'M', 6 }, { 'D', 7 },
+};
 
 
 class BattleBoard
@@ -51,6 +57,11 @@ public:
 			}
 		}
 		boardFile.close();
+
+		// convert invalid chars to spaces
+		for (int i = 0; i < this->R; i++)
+			for (int j = 0; j < this->C; j++)
+				if (!isCharValid(this->board[i][j])) this->board[i][j] = ' ';
 
 		if (!this->isBoardValid())
 		{
