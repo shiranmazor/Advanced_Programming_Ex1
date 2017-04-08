@@ -1,5 +1,6 @@
 #include "Common.h"
 #include <algorithm>
+#include <ctype.h>
 
 std::vector<std::string> splitString(std::string str, char c)
 {

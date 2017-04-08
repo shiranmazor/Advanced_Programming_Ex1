@@ -31,7 +31,7 @@ bool BattleBoard::isBoardValid()
 	bool tooClose = false;
 	bool allGood = false;
 
-
+	cout << "is valid called" << endl;
 	for (int i = 0; i < this->R; i++)
 	{
 		for (int j = 0; j < this->C; j++)
@@ -50,10 +50,10 @@ bool BattleBoard::isBoardValid()
 				{
 					if (l == getShipSize(this->board[i][j]))
 					{
-						if (j + l < this->C && this->board[i][j + l] == this->board[i][j]) badShape[ship2idx[this->board[i][j]]] = true;
+						if (j + l < this->C && this->board[i][j + l] == this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 						else allGood = true;
 					}
-					else if (j + l == this->C || this->board[i][j + l] != this->board[i][j]) badShape[ship2idx[this->board[i][j]]] = true;
+					else if (j + l == this->C || this->board[i][j + l] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 					else {
 						checkedBoxes.insert(std::make_pair(i, j + l));
 						allGood = true;
@@ -65,11 +65,11 @@ bool BattleBoard::isBoardValid()
 				{
 					if (l == getShipSize(this->board[i][j]))
 					{
-						if (i + l < this->R && this->board[i + l][j] == this->board[i][j]) badShape[ship2idx[this->board[i][j]]] = true;
+						if (i + l < this->R && this->board[i + l][j] == this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 						else allGood = true;
 						if (i + l < this->R && (this->board[i + l][j] != ' ' || this->board[i + l][j - 1] != ' ' || this->board[i + l][j + 1] != ' ')) tooClose = true;
 					}
-					else if (i + l == this->R || this->board[i + l][j] != this->board[i][j]) badShape[ship2idx[this->board[i][j]]] = true;
+					else if (i + l == this->R || this->board[i + l][j] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 					else
 					{
 						checkedBoxes.insert(std::make_pair(i + l, j));
@@ -80,7 +80,7 @@ bool BattleBoard::isBoardValid()
 				}
 				if (dir == 0)
 				{
-					if (getShipSize(this->board[i][j]) != 1) badShape[ship2idx[this->board[i][j]]] = true;
+					if (getShipSize(this->board[i][j]) != 1) badShape[ship2idx.at(this->board[i][j])] = true;
 					else allGood = true;
 
 					if (i < this->R - 1 && this->board[i + 1][j] != ' ') tooClose = true;
@@ -101,8 +101,9 @@ bool BattleBoard::isBoardValid()
 	{
 		if (badShape[i]) cout << "Wrong size or shape for ship " << idx2ship[i] << " for player A" << endl;
 		if (badShape[i + 4]) cout << "Wrong size or shape for ship " << idx2ship[i + 4] << " for player B" << endl;
-
 	}
+	//cout << "countA " << countA << endl;
+	//cout << "countB " << countB << endl;
 	if (countA > 5) cout << "Too many ships for player A" << endl;
 	if (countA < 5) cout << "Too few ships for player A" << endl;
 	if (countB > 5) cout << "Too many ships for player B" << endl;
