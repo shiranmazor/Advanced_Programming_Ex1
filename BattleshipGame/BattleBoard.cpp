@@ -25,7 +25,7 @@ bool BattleBoard::isBoardValid()
 	int countB = 0;
 	std::set<pair<int, int>> checkedBoxes;
 	pair<int, int> box;
-	int dir;
+	int dir, totalShape = 0;
 	bool badShape[8] = { false };
 	bool tooClose = false;
 	bool sizeGood;
@@ -95,6 +95,7 @@ bool BattleBoard::isBoardValid()
 	{
 		if (badShape[i]) cout << "Wrong size or shape for ship " << idx2ship[i] << " for player A" << endl;
 		if (badShape[i + 4]) cout << "Wrong size or shape for ship " << idx2ship[i + 4] << " for player B" << endl;
+		totalShape += badShape[i] + badShape[i + 4];
 	}
 
 	if (countA > 5) cout << "Too many ships for player A" << endl;
@@ -104,7 +105,8 @@ bool BattleBoard::isBoardValid()
 
 	if (tooClose) cout << "Adjacent Ships on Board" << endl;
 	
-	return true;
+
+	return (countA == 5 && countB == 5 && !tooClose && totalShape == 0);
 }
 
 int BattleBoard::CalcScore()
@@ -138,9 +140,9 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 
 AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
 {	
-	char c = this->board[move[0]][move[1]];
+	char c = this->board[std::get<0>(move)][std::get<1>(move)];
 	if (!isspace(c) && isOppChar(p, c)){
-		this->board[move[0]][move[1]] = p == A ? HitMarkA : HitMarkB;
+		this->board[std::get<0>(move)][std::get<1>(move)] = p == A ? HitMarkA : HitMarkB;
 		//TODO: add check for sink
 		return AttackResult::Hit;
 	}

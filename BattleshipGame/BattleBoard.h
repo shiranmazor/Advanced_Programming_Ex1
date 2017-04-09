@@ -64,12 +64,6 @@ public:
 		for (int i = 0; i < this->R; i++)
 			for (int j = 0; j < this->C; j++)
 				if (!isCharValid(this->board[i][j])) this->board[i][j] = ' ';
-
-		if (!this->isBoardValid())
-		{
-			// handle invalid board
-			cout << "board not valid" << endl;
-		}
 	}
 
 	BattleBoard(const char** initBoard, int R = 10, int C = 10)

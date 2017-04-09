@@ -134,6 +134,12 @@ void PlayGame(vector<string> gameFiles)
 	bool gameOver = false;
 
 	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
+	if (!mainBoard->isBoardValid())
+	{
+		// handle invalid board
+		return;
+	}
+
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
 	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(B, gameFiles[2]);
