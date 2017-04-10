@@ -118,7 +118,17 @@ bool BattleBoard::isBoardValid()
 
 pair<int, int> BattleBoard::CalcScore()
 {
-	return  pair<int, int>(0,0);
+	pair<int, int> scores = std::make_pair(0, 0);
+
+	for (auto const& element : this->ships)
+	{
+		if (element.second->size == element.second->hitNum)
+		{
+			if (element.second->player == A) scores.first += getShipScore(element.second->type);
+			else scores.second += getShipScore(element.second->type);
+		}
+	}
+	return scores;
 }
 
 int BattleBoard::CheckVictory()
