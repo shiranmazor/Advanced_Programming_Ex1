@@ -149,24 +149,16 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
  AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
 {
 	char c = this->board[std::get<0>(move)][std::get<1>(move)];
-	if (!isspace(c)){ //TODO: check hit on hit
-		if (isupper(c))
-		{
-			this->board[std::get<0>(move)][std::get<1>(move)] = HitMarkA;
-			return AttackResult::Hit;
+	if (!isspace(c)) {
+		if (isAlreadyHit(c)) { 
+			return (this->ships[makeKey(move)]->hitNum == this->ships[makeKey(move)]->size) ? AttackResult::Miss : AttackResult::Hit;
 		}
-		else if (islower(c)) {
-			this->board[std::get<0>(move)][std::get<1>(move)] = HitMarkB;
-			this->ships[makeKey(move)].hitNum++;
-			if (this->ships[makeKey(move)].hitNum == this->ships[makeKey(move)])
-			return AttackResult::Hit;
+		if (isupper(c) || islower(c)) {
+			this->board[std::get<0>(move)][std::get<1>(move)] = isupper(c) ? HitMarkA : HitMarkB;
+			this->ships[makeKey(move)]->hitNum++;
+			return (this->ships[makeKey(move)]->hitNum == this->ships[makeKey(move)]->size) ? AttackResult::Sink : AttackResult::Sink;
 		}
-
-		//TODO: add check for sink
-		return AttackResult::Hit;
 	}
-	else {
-		return AttackResult::Miss;
-	}
+	return AttackResult::Miss;
 }
 
