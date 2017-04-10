@@ -109,6 +109,8 @@ public:
 		if (this->board != NULL)
 		{
 			delete[] this->board;
+			for (auto const& element : this->ships)
+				delete[] element.second; 
 		}
 	}
 
@@ -117,4 +119,5 @@ public:
 	int CheckVictory();
 	void getPlayerBoard(Player player, char** &pBoard);
 	AttackResult performGameMove(Player p, pair<int, int> move);
+	bool isSelfHit(Player currentPlayer, pair<int, int> attackMove);
 };

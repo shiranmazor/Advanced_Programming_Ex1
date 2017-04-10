@@ -18,7 +18,6 @@ int _getShipDirection(BattleBoard* b, int i, int j)
 	return 0;
 }
 
-
 bool BattleBoard::isBoardValid()
 {
 	int countA = 0;
@@ -121,10 +120,24 @@ pair<int, int> BattleBoard::CalcScore()
 {
 	return  pair<int, int>(0,0);
 }
+
 int BattleBoard::CheckVictory()
 {
-	Player winner = A;
-	return -1;
+	int winner = -1;
+	int countA = 0, countB = 0;
+	for (auto const& element : this->ships)
+	{
+		if (element.second->size == element.second->hitNum)
+		{
+			if (element.second->player == A) countA++;
+			else countB++;
+		}
+	}
+	
+	if (countA == 5) winner = B;
+	else if (countB == 5) winner = A;
+
+	return winner;
 }
 
 void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
@@ -159,5 +172,16 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 		}
 	}
 	return AttackResult::Miss;
+}
+
+ bool BattleBoard::isSelfHit(Player currentPlayer, pair<int, int> attackMove)
+{
+	if ((currentPlayer == A && this->board[attackMove.first][attackMove.second] == HitMarkA)||
+		(currentPlayer == B && this->board[attackMove.first][attackMove.second] == HitMarkB))
+	{
+		//player  attack himself
+		return true;
+	}
+	return false;
 }
 
