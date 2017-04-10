@@ -114,4 +114,5 @@ public:
 	int CheckVictory();
 	void getPlayerBoard(Player player, char** &pBoard);
 	AttackResult performGameMove(Player p, pair<int, int> move);
+	bool isSelfHit(Player currentPlayer, pair<int, int> attackMove);
 };

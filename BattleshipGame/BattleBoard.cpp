@@ -151,3 +151,14 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 	}
 }
 
+ bool BattleBoard::isSelfHit(Player currentPlayer, pair<int, int> attackMove)
+{
+	if ((currentPlayer == A && this->board[attackMove.first][attackMove.second] == HitMarkA)||
+		(currentPlayer == B && this->board[attackMove.first][attackMove.second] == HitMarkB))
+	{
+		//player  attack himself
+		return true;
+	}
+	return false;
+}
+
