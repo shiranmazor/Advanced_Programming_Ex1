@@ -160,28 +160,16 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 
  AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
 {
-	char c = this->board[std::get<0>(move)][std::get<1>(move)];
+	char c = this->board[move.first][move.second];
 	if (!isspace(c)) {
 		if (isAlreadyHit(c)) { 
 			return (this->ships[makeKey(move)]->hitNum == this->ships[makeKey(move)]->size) ? AttackResult::Miss : AttackResult::Hit;
 		}
 		if (isupper(c) || islower(c)) {
-			this->board[std::get<0>(move)][std::get<1>(move)] = isupper(c) ? HitMarkA : HitMarkB;
+			this->board[move.first][move.second] = isupper(c) ? HitMarkA : HitMarkB;
 			this->ships[makeKey(move)]->hitNum++;
 			return (this->ships[makeKey(move)]->hitNum == this->ships[makeKey(move)]->size) ? AttackResult::Sink : AttackResult::Sink;
 		}
 	}
 	return AttackResult::Miss;
 }
-
- bool BattleBoard::isSelfHit(Player currentPlayer, pair<int, int> attackMove)
-{
-	if ((currentPlayer == A && this->board[attackMove.first][attackMove.second] == HitMarkA)||
-		(currentPlayer == B && this->board[attackMove.first][attackMove.second] == HitMarkB))
-	{
-		//player  attack himself
-		return true;
-	}
-	return false;
-}
-

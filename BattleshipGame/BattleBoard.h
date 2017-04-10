@@ -12,6 +12,7 @@
 using namespace std;
 
 #define isPlayerChar(x, y) (x==A && (isupper(y) || isspace(y)) || (x==B && (islower(y) || isspace(y))))
+#define isSelfHit(x, y) (x==A && y == HitMarkA) || (x==B && y == HitMarkB))
 #define isOppChar(x, y) ((x==A && islower(y)) || (x==B && isupper(y)))
 #define HitMarkA '*'
 #define HitMarkB '#'
@@ -119,5 +120,4 @@ public:
 	int CheckVictory();
 	void getPlayerBoard(Player player, char** &pBoard);
 	AttackResult performGameMove(Player p, pair<int, int> move);
-	bool isSelfHit(Player currentPlayer, pair<int, int> attackMove);
 };

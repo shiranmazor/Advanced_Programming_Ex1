@@ -139,6 +139,8 @@ int PlayGame(vector<string> gameFiles)
 	
 	bool victory = false;
 	int winPlayer = 2;
+	char** playerBoardA = NULL;
+	char** playerBoardB = NULL;
 	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
 	//check board is valid and initialize board ships
 	if (!mainBoard->isBoardValid())
@@ -150,8 +152,12 @@ int PlayGame(vector<string> gameFiles)
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
 	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(B, gameFiles[2]);
+	mainBoard->getPlayerBoard(playerA->playerName, playerBoardA);
+	mainBoard->getPlayerBoard(playerB->playerName, playerBoardB);
+	playerA->setBoard(const_cast<const char**>(playerBoardA), mainBoard->R, mainBoard->C);
+	playerB->setBoard(const_cast<const char**>(playerBoardB), mainBoard->R, mainBoard->C);
 
-	char** playerBoard = NULL;
+	
 	pair<int, int> attackMove;
 	//we starts with player A
 	BattleshipGameAlgo* currentPlayer = playerA;
@@ -160,9 +166,7 @@ int PlayGame(vector<string> gameFiles)
 	while (!victory)
 	{
 		//set current player board
-		mainBoard->getPlayerBoard(currentPlayer->playerName, playerBoard);
-
-		currentPlayer->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
+		
 		attackMove = currentPlayer->attack();
 		if (attackMove.first == -1 && attackMove.second == -1)
 		{
@@ -190,14 +194,18 @@ int PlayGame(vector<string> gameFiles)
 
 		// if Miss or self hit next turn is of the other player.
 
-		if (moveRes == AttackResult::Miss || (!(moveRes == AttackResult::Miss) && mainBoard->isSelfHit(currentPlayer->playerName,attackMove)))
+		if (moveRes == AttackResult::Miss || (moveRes != AttackResult::Miss && 
+			isSelfHit(currentPlayer->playerName,mainBoard->board[attackMove.first][attackMove.second]))
 			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
 
 	}
 
 	//outside loop
-	if (playerBoard != NULL)
-		delete playerBoard;//avoid memory leak
+	if (playerBoardA != NULL)
+		delete playerBoardA;//avoid memory leak
+							//outside loop
+	if (playerBoardB != NULL)
+		delete playerBoardB;//avoid memory leak
 	if (victory)
 	{
 		if (winPlayer == A)
