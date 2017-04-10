@@ -42,7 +42,7 @@ bool BattleBoard::isBoardValid()
 
 			checkedBoxes.insert(box);
 			currShip = new Vessel(this->board[i][j]);
-			this->Ships[makeKey(box)] = currShip;
+			this->ships[makeKey(box)] = currShip;
 			sizeGood = false;
 			dir = _getShipDirection(this, i, j);
 

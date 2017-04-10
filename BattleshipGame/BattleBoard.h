@@ -13,7 +13,7 @@ using namespace std;
 #define isOppChar(x, y) ((x==A && islower(y)) || (x==B && isupper(y)))
 #define HitMarkA '*'
 #define HitMarkB '#'
-#define makeKey(x) (std::to_string(x.first) +'_'+ std::to_string(x.second))
+#define makeKey(x) (std::to_string(x.first) + '_' + std::to_string(x.second))
 
 const char idx2ship[8] = { 'b', 'p', 'm', 'd', 'B', 'P', 'M', 'D' };
 const std::unordered_map<char, int> ship2idx = {
@@ -26,10 +26,10 @@ public:
 	int size;
 	int hitNum;
 	Player player;
-	Vessel(char type, int size):hitNum(0)
+	Vessel(char type):hitNum(0)
 	{
 		this->type = type;
-		this->size = size;
+		this->size = getShipSize(type);
 		if (isupper(type))
 			this->player = A;
 		else
@@ -43,7 +43,7 @@ public:
 	int R;
 	int C;
 	char** board;
-	std::unordered_map<string, Vessel> ships;
+	std::unordered_map<string, Vessel*> ships;
 
 	//constructor
 	BattleBoard(string boardFilePath, int R = 10, int C = 10)
