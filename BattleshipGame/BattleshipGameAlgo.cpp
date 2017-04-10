@@ -61,7 +61,7 @@ std::pair<int, int> BattleshipGameAlgo::attack()
 
 void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, AttackResult result)
 {
-	char c = this->playerBoard[row][col];
+	char c = this->playerBoard->board[row][col];
 	bool isOppVasel = (islower(c) && this->playerName == A) || (isupper(c) && this->playerName == B);
 	if (isOppVasel) {
 		switch (result) {
