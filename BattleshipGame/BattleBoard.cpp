@@ -149,8 +149,8 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 		}
 		else if (islower(c)) {
 			this->board[std::get<0>(move)][std::get<1>(move)] = HitMarkB;
-			string k = makeKey(move);
-			this->ships[makeKey(move)];
+			this->ships[makeKey(move)].hitNum++;
+			if (this->ships[makeKey(move)].hitNum == this->ships[makeKey(move)])
 			return AttackResult::Hit;
 		}
 
