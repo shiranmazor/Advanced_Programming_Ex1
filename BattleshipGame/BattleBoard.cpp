@@ -55,7 +55,11 @@ bool BattleBoard::isBoardValid()
 						else sizeGood = true;
 					}
 					else if (j + l == this->C || this->board[i][j + l] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
-					else checkedBoxes.insert(std::make_pair(i, j + l));
+					else {
+						box = std::make_pair(i, j + l);
+						checkedBoxes.insert(box);
+						this->ships[makeKey(box)] = currShip;
+					}
 
 					if (i < this->R - 1 && (this->board[i + 1][j + l] != ' ' || this->board[i + 1][j + l - 1] != ' ')) tooClose = true;
 				}
@@ -70,7 +74,9 @@ bool BattleBoard::isBoardValid()
 					else if (i + l == this->R || this->board[i + l][j] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 					else
 					{
-						checkedBoxes.insert(std::make_pair(i + l, j));
+						box = std::make_pair(i + l, j);
+						checkedBoxes.insert(box);
+						this->ships[makeKey(box)] = currShip;
 						if ((j > 0 && this->board[i + l][j - 1] != ' ') || this->board[i + l][j + 1] != ' ') tooClose = true;
 					}
 
