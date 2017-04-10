@@ -53,8 +53,8 @@ std::pair<int, int> BattleshipGameAlgo::attack()
 	line = removeSpaces(line);
 	vector<string> splitLine = splitString(line, ',');
 	//splitLine has 2 items
-	attackMove.first = stoi(splitLine[0]);
-	attackMove.second = stoi(splitLine[1]);
+	attackMove.first = stoi(splitLine[0])-1;
+	attackMove.second = stoi(splitLine[1])-1;
 
 	return attackMove;
 }
