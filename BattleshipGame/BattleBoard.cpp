@@ -141,8 +141,19 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
  AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
 {
 	char c = this->board[std::get<0>(move)][std::get<1>(move)];
-	if (!isspace(c) && isOppChar(p, c)) {
-		this->board[std::get<0>(move)][std::get<1>(move)] = p == A ? HitMarkA : HitMarkB;
+	if (!isspace(c)){ //TODO: check hit on hit
+		if (isupper(c))
+		{
+			this->board[std::get<0>(move)][std::get<1>(move)] = HitMarkA;
+			return AttackResult::Hit;
+		}
+		else if (islower(c)) {
+			this->board[std::get<0>(move)][std::get<1>(move)] = HitMarkB;
+			string k = makeKey(move);
+			this->ships[makeKey(move)];
+			return AttackResult::Hit;
+		}
+
 		//TODO: add check for sink
 		return AttackResult::Hit;
 	}
