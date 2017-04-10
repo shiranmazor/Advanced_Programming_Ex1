@@ -108,6 +108,8 @@ public:
 		if (this->board != NULL)
 		{
 			delete[] this->board;
+			for (auto const& element : this->ships)
+				delete[] element.second; 
 		}
 	}
 
