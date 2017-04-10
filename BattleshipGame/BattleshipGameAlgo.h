@@ -14,7 +14,7 @@ using namespace std;
 #define MySinkMark '!'
 #define OpSinkMark '?'
 
-class BattleshipGameAlgo:IBattleshipGameAlgo
+class BattleshipGameAlgo :IBattleshipGameAlgo
 {
 public:
 	Player playerName;
@@ -34,7 +34,7 @@ public:
 		{
 			//error message for file not found
 			attackFile.close();
-			
+
 		}
 
 	}
@@ -48,9 +48,9 @@ public:
 	virtual std::pair<int, int> attack() override;
 	virtual void notifyOnAttackResult(int player, int row, int col, AttackResult result) override;
 	/*
-	 *check if attack line is valid and contain indexes in range, one comma and doesn't contain 
-	 *white spacecs at the begining or end else return False
-	 *
-	 */
+	*check if attack line is valid and contain indexes in range, one comma and doesn't contain
+	*white spacecs at the begining or end else return False
+	*
+	*/
 	bool isAttackLineValid(string line);
 };

@@ -2,7 +2,7 @@
 #include <vector>
 #include <sstream>
 
-enum Player{ A, B };
+enum Player { A, B };
 using namespace std;
 
 std::vector<std::string> splitString(std::string str, char c);

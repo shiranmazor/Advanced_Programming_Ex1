@@ -2,8 +2,8 @@
 #include "Game.h"
 
 /*
- * get current working directory path
- */
+* get current working directory path
+*/
 bool dirExists(const std::string& dirName_in)
 {
 	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
@@ -22,7 +22,7 @@ void getGameFiles(string folder, vector<string> & gameFiles)
 	std::wstring stemp;
 	HANDLE handle;
 
-	
+
 	memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
 
 	//start with sboard files
@@ -89,7 +89,7 @@ void getGameFiles(string folder, vector<string> & gameFiles)
 
 bool CheckValidPath(vector<string> gameFiles, string path)
 {
-	bool sboard=false, attacka=false, attackb=false;
+	bool sboard = false, attacka = false, attackb = false;
 	if (gameFiles.size() == 3)
 		return true;
 	else
@@ -104,7 +104,7 @@ bool CheckValidPath(vector<string> gameFiles, string path)
 				attacka = true;
 			if (fileIt->find("attack-b") != std::string::npos)
 				attackb = true;
-			
+
 		}
 	}
 
@@ -143,7 +143,7 @@ void PlayGame(vector<string> gameFiles)
 	//create players object
 	BattleshipGameAlgo* playerA = new BattleshipGameAlgo(A, gameFiles[1]);
 	BattleshipGameAlgo* playerB = new BattleshipGameAlgo(B, gameFiles[2]);
-	
+
 	char** playerBoard = NULL;
 	pair<int, int> attackMove;
 	while (!gameOver)
@@ -167,7 +167,7 @@ void PlayGame(vector<string> gameFiles)
 			playerA->notifyOnAttackResult(A, attackMove.first, attackMove.second, moveRes);
 			playerB->notifyOnAttackResult(B, attackMove.first, attackMove.second, moveRes);
 			//Todo:check if playerA hit\sink then give another turn else swap players
-		}			
+		}
 		else
 		{
 			//set board to playerB
@@ -184,9 +184,9 @@ void PlayGame(vector<string> gameFiles)
 			//Todo:check if playerA hit\sink then give another turn else swap players
 		}
 
-		
+
 	}
-	
+
 	if (playerBoard != NULL)
 		delete playerBoard;//avoid memory leak
 }
@@ -212,13 +212,13 @@ int main(int argc, char **argv)
 	//path is valid, continue
 	vector<string> gameFiles;
 	getGameFiles(argv[1], gameFiles);
-	if (!CheckValidPath(gameFiles,path))
+	if (!CheckValidPath(gameFiles, path))
 	{
 		cout << "Error game files are missing, Exiting game" << endl;
 		return -1;
 	}
-	
+
 	PlayGame(gameFiles);
 
-	
+
 }

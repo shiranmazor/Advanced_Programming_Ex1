@@ -27,8 +27,8 @@ public:
 	char** board;
 
 	//constructor
-	BattleBoard(string boardFilePath, int R=10, int C=10)
-	{	
+	BattleBoard(string boardFilePath, int R = 10, int C = 10)
+	{
 		ifstream boardFile(boardFilePath);
 		string temp;
 		this->R = R;
@@ -48,13 +48,13 @@ public:
 			// copy C chars
 			if (temp.length() >= this->C)
 				temp.copy(this->board[i], this->C);
-				
+
 			else {
 				temp.copy(this->board[i], temp.length());
 				for (int j = temp.length() - 1; j < this->C; j++) this->board[i][j] = ' ';
 			}
 
-			if (std::ifstream::eofbit){
+			if (std::ifstream::eofbit) {
 				// eof reached in less than R line, print error
 			}
 		}
@@ -74,10 +74,10 @@ public:
 		//copy the init board to  new board member
 		this->board = new char*[this->R];
 		for (int i = 0; i < this->C; i++) this->board[i] = new char[this->C];
-		
+
 		for (int i = 0; i < this->R; i++)
 		{
-				this->board[i] = _strdup(initBoard[i]);
+			this->board[i] = _strdup(initBoard[i]);
 		}
 	}
 

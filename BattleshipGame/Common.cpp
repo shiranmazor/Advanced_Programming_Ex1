@@ -15,9 +15,9 @@ std::vector<std::string> splitString(std::string str, char c)
 	return seglist;
 }
 
-void replaceAll(string &str, const string &search, const string &replace) 
+void replaceAll(string &str, const string &search, const string &replace)
 {
-	for (size_t pos = 0; ; pos += replace.length()) 
+	for (size_t pos = 0; ; pos += replace.length())
 	{
 		// Locate the substring to replace
 		pos = str.find(search, pos);

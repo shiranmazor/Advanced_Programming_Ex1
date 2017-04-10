@@ -13,7 +13,7 @@ void BattleshipGameAlgo::setBoard(const char** board, int numRows, int numCols)
 
 bool BattleshipGameAlgo::isAttackLineValid(string line)
 {
-	
+
 	string newLine = removeSpaces(line);
 	//check there is excatly one comma!
 	vector<string> splitLine = splitString(newLine, ',');
@@ -24,7 +24,7 @@ bool BattleshipGameAlgo::isAttackLineValid(string line)
 		//check number in the range
 		string value = *i;
 		int num = stoi(value);
-		if (!(num >=1 && num <=10))
+		if (!(num >= 1 && num <= 10))
 			return false;
 	}
 	return true;
@@ -54,30 +54,30 @@ std::pair<int, int> BattleshipGameAlgo::attack()
 	//splitLine has 2 items
 	attackMove.first = stoi(splitLine[0]);
 	attackMove.second = stoi(splitLine[1]);
-	
+
 	return attackMove;
 }
 
 void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, AttackResult result)
 {
 	bool currPlayerMove = (this->playerName == A && player == 0) || (this->playerName == B && player == 1);
-	if (currPlayerMove){
+	if (currPlayerMove) {
 		switch (result) {
-			case AttackResult::Miss:
-				this->playerBoard->board[row][col] = OpMissMark;
-				break;
-			case AttackResult::Hit:
-				this->playerBoard->board[row][col] = OpHitMark;
-				break;
-			case AttackResult::Sink:
-				this->playerBoard->board[row][col] = OpSinkMark; //TODO: mark all the other hits as sink as well
-				break;
-			default:
-				//TODO: print err (unknown attackres)
-				break;
+		case AttackResult::Miss:
+			this->playerBoard->board[row][col] = OpMissMark;
+			break;
+		case AttackResult::Hit:
+			this->playerBoard->board[row][col] = OpHitMark;
+			break;
+		case AttackResult::Sink:
+			this->playerBoard->board[row][col] = OpSinkMark; //TODO: mark all the other hits as sink as well
+			break;
+		default:
+			//TODO: print err (unknown attackres)
+			break;
 		}
 	}
-	else{
+	else {
 		switch (result) {
 		case AttackResult::Miss:
 			this->playerBoard->board[row][col] = MyMissMark;
