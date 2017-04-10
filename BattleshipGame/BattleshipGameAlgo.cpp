@@ -62,16 +62,16 @@ std::pair<int, int> BattleshipGameAlgo::attack()
 void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, AttackResult result)
 {
 	char c = this->playerBoard->board[row][col];
-	bool isOppVasel = (islower(c) && this->playerName == A) || (isupper(c) && this->playerName == B);
+	bool isOppVessel = (islower(c) && this->playerName == A) || (isupper(c) && this->playerName == B);
 	switch (result) {
 	case AttackResult::Miss:
-		this->playerBoard->board[row][col] = isOppVasel ? OpMissMark : MyMissMark;
+		this->playerBoard->board[row][col] = isOppVessel ? OpMissMark : MyMissMark;
 		break;
 	case AttackResult::Hit:
-		this->playerBoard->board[row][col] = isOppVasel ? OpHitMark : MyHitMark;
+		this->playerBoard->board[row][col] = isOppVessel ? OpHitMark : MyHitMark;
 		break;
 	case AttackResult::Sink:
-		this->playerBoard->board[row][col] = isOppVasel ?  OpSinkMark : MySinkMark; //TODO: mark all the other hits as sink as well
+		this->playerBoard->board[row][col] = isOppVessel ?  OpSinkMark : MySinkMark; //TODO: mark all the other hits as sink as well
 		break;
 	default:
 		//TODO: print err (unknown attackres)
