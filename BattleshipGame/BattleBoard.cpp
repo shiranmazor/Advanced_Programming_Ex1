@@ -21,7 +21,6 @@ int _getShipDirection(BattleBoard* b, int i, int j)
 
 bool BattleBoard::isBoardValid()
 {
-	//Todo: create ships map
 	int countA = 0;
 	int countB = 0;
 	std::set<pair<int, int>> checkedBoxes;
@@ -30,6 +29,7 @@ bool BattleBoard::isBoardValid()
 	bool badShape[8] = { false };
 	bool tooClose = false;
 	bool sizeGood;
+	Vessel* currShip;
 
 	for (int i = 0; i < this->R; i++)
 	{
@@ -41,6 +41,8 @@ bool BattleBoard::isBoardValid()
 			if (this->board[i][j] == ' ' || checkedBoxes.find(box) != checkedBoxes.end()) continue;
 
 			checkedBoxes.insert(box);
+			currShip = new Vessel(this->board[i][j]);
+			this->ships[makeKey(box)] = currShip;
 			sizeGood = false;
 			dir = _getShipDirection(this, i, j);
 
@@ -53,7 +55,11 @@ bool BattleBoard::isBoardValid()
 						else sizeGood = true;
 					}
 					else if (j + l == this->C || this->board[i][j + l] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
-					else checkedBoxes.insert(std::make_pair(i, j + l));
+					else {
+						box = std::make_pair(i, j + l);
+						checkedBoxes.insert(box);
+						this->ships[makeKey(box)] = currShip;
+					}
 
 					if (i < this->R - 1 && (this->board[i + 1][j + l] != ' ' || this->board[i + 1][j + l - 1] != ' ')) tooClose = true;
 				}
@@ -68,7 +74,9 @@ bool BattleBoard::isBoardValid()
 					else if (i + l == this->R || this->board[i + l][j] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 					else
 					{
-						checkedBoxes.insert(std::make_pair(i + l, j));
+						box = std::make_pair(i + l, j);
+						checkedBoxes.insert(box);
+						this->ships[makeKey(box)] = currShip;
 						if ((j > 0 && this->board[i + l][j - 1] != ' ') || this->board[i + l][j + 1] != ' ') tooClose = true;
 					}
 
@@ -141,8 +149,19 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
  AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
 {
 	char c = this->board[std::get<0>(move)][std::get<1>(move)];
-	if (!isspace(c) && isOppChar(p, c)) {
-		this->board[std::get<0>(move)][std::get<1>(move)] = p == A ? HitMarkA : HitMarkB;
+	if (!isspace(c)){ //TODO: check hit on hit
+		if (isupper(c))
+		{
+			this->board[std::get<0>(move)][std::get<1>(move)] = HitMarkA;
+			return AttackResult::Hit;
+		}
+		else if (islower(c)) {
+			this->board[std::get<0>(move)][std::get<1>(move)] = HitMarkB;
+			string k = makeKey(move);
+			this->ships[makeKey(move)];
+			return AttackResult::Hit;
+		}
+
 		//TODO: add check for sink
 		return AttackResult::Hit;
 	}
