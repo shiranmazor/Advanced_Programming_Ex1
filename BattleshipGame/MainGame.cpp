@@ -138,7 +138,7 @@ int PlayGame(vector<string> gameFiles)
 {
 	
 	bool victory = false;
-	int winPlayer;
+	int winPlayer = 2;
 	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
 	//check board is valid and initialize board ships
 	if (!mainBoard->isBoardValid())
@@ -188,12 +188,10 @@ int PlayGame(vector<string> gameFiles)
 			break;
 		}
 
-		//check if playerA hit\sink then give another turn else swap players
+		// if Miss or self hit next turn is of the other player.
 
-		if (moveRes == AttackResult::Miss )
+		if (moveRes == AttackResult::Miss || (!(moveRes == AttackResult::Miss) && mainBoard->isSelfHit(currentPlayer->playerName,attackMove)))
 			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
-	
-
 
 	}
 
@@ -204,7 +202,7 @@ int PlayGame(vector<string> gameFiles)
 	{
 		if (winPlayer == A)
 			cout << "Player A won" << endl;
-		else
+		else if (winPlayer == B)
 			cout << "Player B won" << endl;
 	}
 	//points

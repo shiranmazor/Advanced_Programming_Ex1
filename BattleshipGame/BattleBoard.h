@@ -16,6 +16,7 @@ using namespace std;
 #define HitMarkA '*'
 #define HitMarkB '#'
 #define makeKey(x) (std::to_string(x.first) + '_' + std::to_string(x.second))
+#define isAlreadyHit(x) (x == '*' || x == '#')
 
 const char idx2ship[8] = { 'b', 'p', 'm', 'd', 'B', 'P', 'M', 'D' };
 const std::unordered_map<char, int> ship2idx = {
@@ -118,4 +119,5 @@ public:
 	int CheckVictory();
 	void getPlayerBoard(Player player, char** &pBoard);
 	AttackResult performGameMove(Player p, pair<int, int> move);
+	bool isSelfHit(Player currentPlayer, pair<int, int> attackMove);
 };
