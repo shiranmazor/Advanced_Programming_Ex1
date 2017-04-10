@@ -61,7 +61,7 @@ bool BattleBoard::isBoardValid()
 						this->ships[makeKey(box)] = currShip;
 					}
 
-					if (i < this->R - 1 && (this->board[i + 1][j + l] != ' ' || this->board[i + 1][j + l - 1] != ' ')) tooClose = true;
+					if (i < this->R - 1 && this->board[i + 1][j + l] != ' ') tooClose = true;
 				}
 				else if (dir == 2)
 				{
@@ -69,7 +69,7 @@ bool BattleBoard::isBoardValid()
 					{
 						if (i + l < this->R && this->board[i + l][j] == this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 						else sizeGood = true;
-						if (i + l < this->R && (this->board[i + l][j] != ' ' || (j > 0 && this->board[i + l][j - 1] != ' ') || (j < this->C - 1 && this->board[i + l][j + 1] != ' '))) tooClose = true;
+						if (i + l < this->R && this->board[i + l][j] != ' ') tooClose = true;
 					}
 					else if (i + l == this->R || this->board[i + l][j] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
 					else
@@ -88,7 +88,6 @@ bool BattleBoard::isBoardValid()
 
 					if (i < this->R - 1 && this->board[i + 1][j] != ' ') tooClose = true;
 					if (j < this->C - 1 && this->board[i][j + 1] != ' ') tooClose = true;
-					if (i < this->R - 1 && j < this->C - 1 && this->board[i + 1][j + 1] != ' ') tooClose = true;
 				}
 			}
 
