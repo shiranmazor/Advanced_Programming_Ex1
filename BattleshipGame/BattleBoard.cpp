@@ -178,7 +178,7 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 		if (isupper(c) || islower(c)) {
 			this->board[move.first][move.second] = isupper(c) ? HitMarkA : HitMarkB;
 			this->ships[makeKey(move)]->hitNum++;
-			return (this->ships[makeKey(move)]->hitNum == this->ships[makeKey(move)]->size) ? AttackResult::Sink : AttackResult::Sink;
+			return (this->ships[makeKey(move)]->hitNum == this->ships[makeKey(move)]->size) ? AttackResult::Sink : AttackResult::Hit;
 		}
 	}
 	return AttackResult::Miss;
