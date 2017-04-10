@@ -138,7 +138,7 @@ void BattleBoard::getPlayerBoard(Player player, char** &pBoard)
 	}
 }
 
-AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
+ AttackResult BattleBoard::performGameMove(Player p, pair<int, int> move)
 {
 	char c = this->board[std::get<0>(move)][std::get<1>(move)];
 	if (!isspace(c) && isOppChar(p, c)) {

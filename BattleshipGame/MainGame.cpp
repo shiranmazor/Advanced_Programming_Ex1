@@ -190,8 +190,10 @@ int PlayGame(vector<string> gameFiles)
 
 		//check if playerA hit\sink then give another turn else swap players
 
-		if (moveRes == AttackResult::Miss)
+		if (moveRes == AttackResult::Miss )
 			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
+	
+
 
 	}
 
