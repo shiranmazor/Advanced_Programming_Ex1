@@ -2,6 +2,7 @@
 #include <cctype>
 #define isPlayerTool(x, y) (x==A && (isupper(y) && !isspace(y)) || (x==B && (islower(y) && !isspace(y))))
 
+
 void BattleshipGameAlgo::setBoard(const char** board, int numRows, int numCols)
 {
 	if (this->playerBoard != nullptr)
@@ -60,7 +61,7 @@ std::pair<int, int> BattleshipGameAlgo::attack()
 
 void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, AttackResult result)
 {
-	bool currPlayerMove = (this->playerName == A && player == 0) || (this->playerName == B && player == 1);
+	bool currPlayerMove = (this->playerName == A && player == A) || (this->playerName == B && player == B);
 	if (currPlayerMove) {
 		switch (result) {
 		case AttackResult::Miss:

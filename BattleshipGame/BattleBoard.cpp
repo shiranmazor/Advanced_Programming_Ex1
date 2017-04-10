@@ -110,15 +110,14 @@ bool BattleBoard::isBoardValid()
 	return (countA == 5 && countB == 5 && !tooClose && totalShape == 0);
 }
 
-int BattleBoard::CalcScore()
+pair<int, int> BattleBoard::CalcScore()
 {
-	return 0;
+	return  pair<int, int>(0,0);
 }
-
-Player BattleBoard::CheckVictory()
+int BattleBoard::CheckVictory()
 {
 	Player winner = A;
-	return winner;
+	return -1;
 }
 
 void BattleBoard::getPlayerBoard(Player player, char** &pBoard)

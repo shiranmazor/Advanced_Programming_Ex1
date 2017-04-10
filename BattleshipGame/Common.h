@@ -2,6 +2,7 @@
 #include <vector>
 #include <sstream>
 
+
 enum Player { A, B };
 using namespace std;
 

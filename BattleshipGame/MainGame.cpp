@@ -4,6 +4,13 @@
 /*
 * get current working directory path
 */
+BattleshipGameAlgo* swapPlayer(BattleshipGameAlgo* current, BattleshipGameAlgo* pA, BattleshipGameAlgo* pB)
+{
+	if (current->playerName == pA->playerName)
+		return pB;
+	else
+		return pA;
+}
 bool dirExists(const std::string& dirName_in)
 {
 	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
@@ -129,14 +136,14 @@ bool CheckValidPath(vector<string> gameFiles, string path)
 
 int PlayGame(vector<string> gameFiles)
 {
-	//we starts with player A
-	Player currentPlayer = A;
-	bool gameOver = false;
-
+	
+	bool victory = false;
+	int winPlayer;
 	BattleBoard* mainBoard = new BattleBoard(gameFiles[0]);
+	//check board is valid and initialize board ships
 	if (!mainBoard->isBoardValid())
 	{
-		// handle invalid board
+		//  invalid board
 		return -1;
 	}
 
@@ -146,49 +153,64 @@ int PlayGame(vector<string> gameFiles)
 
 	char** playerBoard = NULL;
 	pair<int, int> attackMove;
-	while (!gameOver)
+	//we starts with player A
+	BattleshipGameAlgo* currentPlayer = playerA;
+	bool onePlayerGame = false;
+	
+	while (!victory)
 	{
 		//set current player board
-		mainBoard->getPlayerBoard(currentPlayer, playerBoard);
-		if (currentPlayer == A)
+		mainBoard->getPlayerBoard(currentPlayer->playerName, playerBoard);
+
+		currentPlayer->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
+		attackMove = currentPlayer->attack();
+		if (attackMove.first == -1 && attackMove.second == -1)
 		{
-			//set board to playerA
-			playerA->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
-			//get attack move
-			attackMove = playerA->attack();
-			attackMove = playerA->attack();
-			attackMove = playerA->attack();
-			attackMove = playerA->attack();
-
-			//Todo:perform move
-			AttackResult moveRes = mainBoard->performGameMove(playerA->playerName, attackMove);
-
-			//notify both players on the moveAttak results
-			playerA->notifyOnAttackResult(A, attackMove.first, attackMove.second, moveRes);
-			playerB->notifyOnAttackResult(B, attackMove.first, attackMove.second, moveRes);
-			//Todo:check if playerA hit\sink then give another turn else swap players
+			if (onePlayerGame)
+			{
+				//exit while loop
+				break;
+			}
+			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
+			continue;
 		}
-		else
+		AttackResult moveRes = mainBoard->performGameMove(currentPlayer->playerName, attackMove);
+
+		//notify both players on the moveAttak results
+		playerA->notifyOnAttackResult(currentPlayer->playerName, attackMove.first, attackMove.second, moveRes);
+		playerB->notifyOnAttackResult(currentPlayer->playerName, attackMove.first, attackMove.second, moveRes);
+
+		//check victory:
+		winPlayer = mainBoard->CheckVictory();
+		if (winPlayer == A || winPlayer == B)
 		{
-			//set board to playerB
-			playerB->setBoard(const_cast<const char**>(playerBoard), mainBoard->R, mainBoard->C);
-			//get attack move
-			attackMove = playerB->attack();
-			//Todo:perform move
-
-			AttackResult moveRes = mainBoard->performGameMove(playerB->playerName, attackMove);
-
-			//notify both players on the moveAttak results
-			playerA->notifyOnAttackResult(B, attackMove.first, attackMove.second, moveRes);
-			playerB->notifyOnAttackResult(B, attackMove.first, attackMove.second, moveRes);
-			//Todo:check if playerA hit\sink then give another turn else swap players
+			victory = true;
+			break;
 		}
 
+		//check if playerA hit\sink then give another turn else swap players
+
+		if (moveRes == AttackResult::Miss)
+			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
 
 	}
 
+	//outside loop
 	if (playerBoard != NULL)
 		delete playerBoard;//avoid memory leak
+	if (victory)
+	{
+		if (winPlayer == A)
+			cout << "Player A won" << endl;
+		else
+			cout << "Player B won" << endl;
+	}
+	//points
+	cout << "Points:" << endl;
+	pair<int, int> gameScore = mainBoard->CalcScore();
+	cout << "Player A: " << gameScore.first << endl;
+	cout << "Player B: " << gameScore.second << endl;
+	return 0;
 }
 
 
