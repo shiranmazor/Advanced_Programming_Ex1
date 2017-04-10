@@ -21,7 +21,6 @@ int _getShipDirection(BattleBoard* b, int i, int j)
 
 bool BattleBoard::isBoardValid()
 {
-	//Todo: create ships map
 	int countA = 0;
 	int countB = 0;
 	std::set<pair<int, int>> checkedBoxes;
@@ -30,6 +29,7 @@ bool BattleBoard::isBoardValid()
 	bool badShape[8] = { false };
 	bool tooClose = false;
 	bool sizeGood;
+	Vessel* currShip;
 
 	for (int i = 0; i < this->R; i++)
 	{
@@ -41,6 +41,8 @@ bool BattleBoard::isBoardValid()
 			if (this->board[i][j] == ' ' || checkedBoxes.find(box) != checkedBoxes.end()) continue;
 
 			checkedBoxes.insert(box);
+			currShip = new Vessel(this->board[i][j]);
+			this->Ships[makeKey(box)] = currShip;
 			sizeGood = false;
 			dir = _getShipDirection(this, i, j);
 
