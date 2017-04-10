@@ -127,7 +127,7 @@ bool CheckValidPath(vector<string> gameFiles, string path)
 }
 
 
-void PlayGame(vector<string> gameFiles)
+int PlayGame(vector<string> gameFiles)
 {
 	//we starts with player A
 	Player currentPlayer = A;
@@ -137,7 +137,7 @@ void PlayGame(vector<string> gameFiles)
 	if (!mainBoard->isBoardValid())
 	{
 		// handle invalid board
-		return;
+		return -1;
 	}
 
 	//create players object
@@ -218,7 +218,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	PlayGame(gameFiles);
+	return 	PlayGame(gameFiles);
 
 
 }

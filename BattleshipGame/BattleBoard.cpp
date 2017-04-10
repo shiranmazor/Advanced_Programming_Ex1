@@ -21,6 +21,7 @@ int _getShipDirection(BattleBoard* b, int i, int j)
 
 bool BattleBoard::isBoardValid()
 {
+	//Todo: create ships map
 	int countA = 0;
 	int countB = 0;
 	std::set<pair<int, int>> checkedBoxes;

@@ -6,6 +6,7 @@
 #include "IBattleshipGameAlgo.h"
 #include <string.h>
 #include <iostream>
+#include <map>
 using namespace std;
 
 #define isPlayerChar(x, y) (x==A && (isupper(y) || isspace(y)) || (x==B && (islower(y) || isspace(y))))
@@ -17,14 +18,31 @@ const char idx2ship[8] = { 'b', 'p', 'm', 'd', 'B', 'P', 'M', 'D' };
 const std::unordered_map<char, int> ship2idx = {
 	{ 'b', 0 },{ 'p', 1 },{ 'm', 2 },{ 'd', 3 },{ 'B', 4 },{ 'P', 5 },{ 'M', 6 },{ 'D', 7 },
 };
+class Vessel
+{
+public:
+	char type;
+	int size;
+	int hitNum;
+	Player player;
+	Vessel(char type, int size):hitNum(0)
+	{
+		this->type = type;
+		this->size = size;
+		if (isupper(type))
+			this->player = A;
+		else
+			this->player = B;
+	}
 
+};
 class BattleBoard
 {
 public:
 	int R;
 	int C;
-	//bool is_main_board;
 	char** board;
+	std::unordered_map<pair<int, int>, Vessel> Ships;
 
 	//constructor
 	BattleBoard(string boardFilePath, int R = 10, int C = 10)

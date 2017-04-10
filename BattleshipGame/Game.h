@@ -17,6 +17,6 @@ bool dirExists(const std::string& dirName_in);
 * performing game steps and finish the game in case of victory or finished attack steps
 * gameFiles contains - sboard file, attack-a file,attack-b file by this order!
 */
-void PlayGame(vector<string> gameFiles);
+int PlayGame(vector<string> gameFiles);
 
 
