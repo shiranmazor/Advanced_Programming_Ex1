@@ -63,37 +63,19 @@ void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, Atta
 {
 	char c = this->playerBoard->board[row][col];
 	bool isOppVasel = (islower(c) && this->playerName == A) || (isupper(c) && this->playerName == B);
-	if (isOppVasel) {
-		switch (result) {
-		case AttackResult::Miss:
-			this->playerBoard->board[row][col] = OpMissMark;
-			break;
-		case AttackResult::Hit:
-			this->playerBoard->board[row][col] = OpHitMark;
-			break;
-		case AttackResult::Sink:
-			this->playerBoard->board[row][col] = OpSinkMark; //TODO: mark all the other hits as sink as well
-			break;
-		default:
-			//TODO: print err (unknown attackres)
-			break;
-		}
-	}
-	else {
-		switch (result) {
-		case AttackResult::Miss:
-			this->playerBoard->board[row][col] = MyMissMark;
-			break;
-		case AttackResult::Hit:
-			this->playerBoard->board[row][col] = MyHitMark;
-			break;
-		case AttackResult::Sink:
-			this->playerBoard->board[row][col] = MySinkMark; //TODO: mark all the other hits as sink as well
-			break;
-		default:
-			//TODO: print err (unknown attackres)
-			break;
-		}
+	switch (result) {
+	case AttackResult::Miss:
+		this->playerBoard->board[row][col] = isOppVasel ? OpMissMark : MyMissMark;
+		break;
+	case AttackResult::Hit:
+		this->playerBoard->board[row][col] = isOppVasel ? OpHitMark : MyHitMark;
+		break;
+	case AttackResult::Sink:
+		this->playerBoard->board[row][col] = isOppVasel ?  OpSinkMark : MySinkMark; //TODO: mark all the other hits as sink as well
+		break;
+	default:
+		//TODO: print err (unknown attackres)
+		break;
 	}
 }
 
