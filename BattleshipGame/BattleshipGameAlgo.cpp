@@ -61,8 +61,9 @@ std::pair<int, int> BattleshipGameAlgo::attack()
 
 void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, AttackResult result)
 {
-	bool currPlayerMove = (this->playerName == A && player == A) || (this->playerName == B && player == B);
-	if (currPlayerMove) {
+	char c = this->playerBoard->board[row][col];
+	bool isOppVasel = (islower(c) && this->playerName == A) || (isupper(c) && this->playerName == B);
+	if (isOppVasel) {
 		switch (result) {
 		case AttackResult::Miss:
 			this->playerBoard->board[row][col] = OpMissMark;
