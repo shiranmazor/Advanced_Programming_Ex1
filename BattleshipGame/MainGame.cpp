@@ -166,7 +166,7 @@ int PlayGame(vector<string> gameFiles)
 	while (!victory)
 	{
 		//set current player board
-		
+		cout << "Starting attack with player: " << currentPlayer->playerName << endl;
 		attackMove = currentPlayer->attack();
 		if (attackMove.first == -1 && attackMove.second == -1)
 		{
@@ -175,6 +175,7 @@ int PlayGame(vector<string> gameFiles)
 				//exit while loop
 				break;
 			}
+			onePlayerGame = true;
 			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
 			continue;
 		}
