@@ -119,11 +119,13 @@ bool BattleBoard::isBoardValid()
 pair<int, int> BattleBoard::CalcScore()
 {
 	pair<int, int> scores = std::make_pair(0, 0);
+	std::set<Vessel*> seenVessels;
 
 	for (auto const& element : this->ships)
 	{
-		if (element.second->size == element.second->hitNum)
+		if (element.second->size == element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
 		{
+			seenVessels.insert(element.second);
 			if (element.second->player == A) scores.first += getShipScore(element.second->type);
 			else scores.second += getShipScore(element.second->type);
 		}
@@ -135,10 +137,13 @@ int BattleBoard::CheckVictory()
 {
 	int winner = -1;
 	int countA = 0, countB = 0;
+	std::set<Vessel*> seenVessels;
+
 	for (auto const& element : this->ships)
 	{
-		if (element.second->size == element.second->hitNum)
+		if (element.second->size == element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
 		{
+			seenVessels.insert(element.second);
 			if (element.second->player == A) countA++;
 			else countB++;
 		}
