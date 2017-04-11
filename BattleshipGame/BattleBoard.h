@@ -19,9 +19,9 @@ using namespace std;
 #define makeKey(x) (std::to_string(x.first) + '_' + std::to_string(x.second))
 #define isAlreadyHit(x) (x == '*' || x == '#')
 
-const char idx2ship[8] = { 'b', 'p', 'm', 'd', 'B', 'P', 'M', 'D' };
+const char idx2ship[8] = { 'B', 'P', 'M', 'D', 'b', 'p', 'm', 'd' };
 const std::unordered_map<char, int> ship2idx = {
-	{ 'b', 0 },{ 'p', 1 },{ 'm', 2 },{ 'd', 3 },{ 'B', 4 },{ 'P', 5 },{ 'M', 6 },{ 'D', 7 },
+	{ 'B', 0 },{ 'P', 1 },{ 'M', 2 },{ 'D', 3 },{ 'b', 4 },{ 'p', 5 },{ 'm', 6 },{ 'd', 7 },
 };
 class Vessel
 {
