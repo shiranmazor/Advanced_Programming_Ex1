@@ -47,10 +47,11 @@ public:
 	int R;
 	int C;
 	char** board;
+	int playerToolsNum;
 	std::unordered_map<string, Vessel*> ships;
 
 	//constructor
-	BattleBoard(string boardFilePath, int R = 10, int C = 10)
+	BattleBoard(string boardFilePath, int R = 10, int C = 10):playerToolsNum(5)
 	{
 		ifstream boardFile(boardFilePath);
 		string temp;
