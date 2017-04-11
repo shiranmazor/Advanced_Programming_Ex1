@@ -125,9 +125,12 @@ pair<int, int> BattleBoard::CalcScore()
 	{
 		if (element.second->size == element.second->hitNum && seenVessels.find(element.second) == seenVessels.end())
 		{
+			//ship has sinked!
 			seenVessels.insert(element.second);
-			if (element.second->player == A) scores.first += getShipScore(element.second->type);
-			else scores.second += getShipScore(element.second->type);
+			if (element.second->player == B) 
+				scores.first += getShipScore(element.second->type);
+			else 
+				scores.second += getShipScore(element.second->type);
 		}
 	}
 	return scores;
