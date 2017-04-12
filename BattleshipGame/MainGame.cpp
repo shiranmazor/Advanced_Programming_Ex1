@@ -166,7 +166,6 @@ int PlayGame(vector<string> gameFiles)
 	while (!victory)
 	{
 		//set current player board
-		cout << "Starting attack with player: " << currentPlayer->playerName << endl;
 		attackMove = currentPlayer->attack();
 		if (attackMove.first == -1 && attackMove.second == -1)
 		{
@@ -201,12 +200,7 @@ int PlayGame(vector<string> gameFiles)
 
 	}
 
-	//outside loop
-	if (playerBoardA != NULL)
-		delete playerBoardA;//avoid memory leak
-							//outside loop
-	if (playerBoardB != NULL)
-		delete playerBoardB;//avoid memory leak
+	
 	if (victory)
 	{
 		if (winPlayer == A)
@@ -219,6 +213,17 @@ int PlayGame(vector<string> gameFiles)
 	pair<int, int> gameScore = mainBoard->CalcScore();
 	cout << "Player A: " << gameScore.first << endl;
 	cout << "Player B: " << gameScore.second << endl;
+
+	//outside loop
+	if (playerBoardA != NULL)
+		delete[] playerBoardA;//avoid memory leak
+							//outside loop
+	if (playerBoardB != NULL)
+		delete[] playerBoardB;//avoid memory leak
+	//delete objects
+	delete playerA;
+	delete playerB;
+	delete mainBoard;
 	return 0;
 }
 

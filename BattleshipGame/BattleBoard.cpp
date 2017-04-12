@@ -163,15 +163,15 @@ bool BattleBoard::isBoardValid()
 		totalShape += badShape[i];
 	}
 
-	if (countA > 5) cout << "Too many ships for player A" << endl;
-	if (countA < 5) cout << "Too few ships for player A" << endl;
-	if (countB > 5) cout << "Too many ships for player B" << endl;
-	if (countB < 5) cout << "Too few ships for player B" << endl;
+	if (countA > this->playerToolsNum) cout << "Too many ships for player A" << endl;
+	if (countA < this->playerToolsNum) cout << "Too few ships for player A" << endl;
+	if (countB > this->playerToolsNum) cout << "Too many ships for player B" << endl;
+	if (countB < this->playerToolsNum) cout << "Too few ships for player B" << endl;
 
 	if (tooClose) cout << "Adjacent Ships on Board" << endl;
 
 
-	return (countA == 5 && countB == 5 && !tooClose && totalShape == 0);
+	return (countA == this->playerToolsNum && countB == this->playerToolsNum && !tooClose && totalShape == 0);
 }
 
 pair<int, int> BattleBoard::CalcScore()
@@ -181,11 +181,14 @@ pair<int, int> BattleBoard::CalcScore()
 
 	for (auto const& element : this->ships)
 	{
-		if (element.second->size <= element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
+		if (element.second->size <= element.second->hitNum && seenVessels.find(element.second) == seenVessels.end())
 		{
+			//ship has sinked!
 			seenVessels.insert(element.second);
-			if (element.second->player == A) scores.first += getShipScore(element.second->type);
-			else scores.second += getShipScore(element.second->type);
+			if (element.second->player == B) 
+				scores.first += getShipScore(element.second->type);
+			else 
+				scores.second += getShipScore(element.second->type);
 		}
 	}
 	return scores;
@@ -199,7 +202,7 @@ int BattleBoard::CheckVictory()
 
 	for (auto const& element : this->ships)
 	{
-		if (element.second->size <= element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
+		if (element.second->size <= element.second->hitNum && seenVessels.find(element.second) == seenVessels.end())
 		{
 			seenVessels.insert(element.second);
 			if (element.second->player == A) countA++;
@@ -207,8 +210,8 @@ int BattleBoard::CheckVictory()
 		}
 	}
 	
-	if (countA == 5) winner = B;
-	else if (countB == 5) winner = A;
+	if (countA == this->playerToolsNum) winner = B;
+	else if (countB == this->playerToolsNum) winner = A;
 
 	return winner;
 }
