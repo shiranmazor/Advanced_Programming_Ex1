@@ -1,11 +1,14 @@
 #include "BattleBoard.h"
 #include <set>
 #include <iostream>
+#include <ppltasks.h>
 
 /*
-0 - no direction (ship size 1 or adjecent ships error)
-1 - going right
-2 - going down */
+ * 	Board validation assisting function, returns:
+ *	0 - no direction (ship size 1 or adjecent ships error)
+ *	1 - going right
+ *	2 - going down 
+*/
 int _getShipDirection(BattleBoard* b, int i, int j)
 {
 	if (j != b->C - 1)
@@ -18,16 +21,34 @@ int _getShipDirection(BattleBoard* b, int i, int j)
 	return 0;
 }
 
+void _collect_ship(BattleBoard* b, int i, int j, std::set<pair<int, int>>* s)
+{
+	char curr = b->board[i][j];
+	s->insert(std::make_pair(i, j));
+
+	if (i + 1 < b->R && b->board[i + 1][j] == curr && s->find(std::make_pair(i + 1, j)) == s->end()) _collect_ship(b, i + 1, j, s);
+	if (i > 0 && b->board[i - 1][j] == curr && s->find(std::make_pair(i - 1, j)) == s->end()) _collect_ship(b, i - 1, j, s);
+	if (j + 1 < b->C && b->board[i][j + 1] == curr && s->find(std::make_pair(i, j + 1)) == s->end()) _collect_ship(b, i, j + 1, s);
+	if (j > 0 && b->board[i][j - 1] == curr && s->find(std::make_pair(i, j - 1)) == s->end()) _collect_ship(b, i, j - 1, s);
+
+	return;
+}
+
+/*
+ *  Check if the board is valid and print relevant messages if it isn't, 
+ *  while doing so, also initialize 'ships' Map containing board boxes 
+ *  leading to Vessel object representing the different Vessels on the board.
+ */
 bool BattleBoard::isBoardValid()
 {
 	int countA = 0;
 	int countB = 0;
-	std::set<pair<int, int>> checkedBoxes;
+	std::set<pair<int, int>> checkedBoxes, temp;
 	pair<int, int> box;
 	int dir, totalShape = 0;
 	bool badShape[8] = { false };
 	bool tooClose = false;
-	bool sizeGood;
+	bool sizeGood, allI, allJ;
 	Vessel* currShip;
 
 	for (int i = 0; i < this->R; i++)
@@ -36,9 +57,29 @@ bool BattleBoard::isBoardValid()
 		{
 			box = std::make_pair(i, j);
 
-			// ignore empty, invalid or already checked boxes (in case of full ship scan)
+			// ignore empty or already checked boxes (in case of full ship scan)
 			if (this->board[i][j] == ' ' || checkedBoxes.find(box) != checkedBoxes.end()) continue;
 
+			// check for ship shape and remove irregular shaped ships
+			_collect_ship(this, i, j, &temp);
+			allI = true;
+			allJ = true;
+			for (auto const& element : temp)
+			{
+				allI = element.first == i && allI;
+				allJ = element.second == j && allJ;
+			}
+			if (!allJ && !allI)
+			{
+				badShape[ship2idx.at(this->board[i][j])] = true;
+				for (auto const& element : temp) 
+					this->board[element.first][element.second] = ' ';
+				temp.clear();
+				continue;
+			}
+			temp.clear();
+
+			// found a ship, verify size and pther ships proximity 
 			checkedBoxes.insert(box);
 			currShip = new Vessel(this->board[i][j]);
 			this->ships[makeKey(box)] = currShip;
@@ -115,11 +156,11 @@ bool BattleBoard::isBoardValid()
 		}
 	}
 
-	for (int i = 0; i < 4; i++)
+	// print out relevant errors
+	for (int i = 0; i < 8; i++) 
 	{
-		if (badShape[i]) cout << "Wrong size or shape for ship " << idx2ship[i] << " for player A" << endl;
-		if (badShape[i + 4]) cout << "Wrong size or shape for ship " << idx2ship[i + 4] << " for player B" << endl;
-		totalShape += badShape[i] + badShape[i + 4];
+		if (badShape[i]) cout << "Wrong size or shape for ship " << idx2ship[i] << " for player " << ((i < 4) ? 'A' : 'B') << endl;
+		totalShape += badShape[i];
 	}
 
 	if (countA > 5) cout << "Too many ships for player A" << endl;
@@ -140,7 +181,7 @@ pair<int, int> BattleBoard::CalcScore()
 
 	for (auto const& element : this->ships)
 	{
-		if (element.second->size == element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
+		if (element.second->size <= element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
 		{
 			seenVessels.insert(element.second);
 			if (element.second->player == A) scores.first += getShipScore(element.second->type);
@@ -158,7 +199,7 @@ int BattleBoard::CheckVictory()
 
 	for (auto const& element : this->ships)
 	{
-		if (element.second->size == element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
+		if (element.second->size <= element.second->hitNum && seenVessels.find(element.second) != seenVessels.end())
 		{
 			seenVessels.insert(element.second);
 			if (element.second->player == A) countA++;
