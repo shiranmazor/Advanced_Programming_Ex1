@@ -150,7 +150,7 @@ bool CheckValidPath(vector<string> gameFiles, string path)
 }
 
 
-int PlayGame(vector<string> gameFiles, bool quietMode, int delay)
+int PlayGame(vector<string> gameFiles)
 {
 	
 	bool victory = false;
@@ -178,7 +178,6 @@ int PlayGame(vector<string> gameFiles, bool quietMode, int delay)
 	//we starts with player A
 	BattleshipGameAlgo* currentPlayer = playerA;
 	bool onePlayerGame = false;
-	printFirstBoard(mainBoard);
 	
 	while (!victory)
 	{
@@ -214,12 +213,9 @@ int PlayGame(vector<string> gameFiles, bool quietMode, int delay)
 		if (moveRes == AttackResult::Miss || (moveRes != AttackResult::Miss && 
 			isSelfHit(currentPlayer->playerName,mainBoard->board[attackMove.first][attackMove.second]))
 			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
-		//add delay
-		Sleep(delay);
 		
 	}
 
-	printFirstBoard(mainBoard);
 	if (victory)
 	{
 		if (winPlayer == A)
@@ -245,67 +241,12 @@ int PlayGame(vector<string> gameFiles, bool quietMode, int delay)
 	delete mainBoard;
 	return 0;
 }
-//print the first game board with colors to the screen
-// p - green,  b - blue, m-yellow,d- red
-void printFirstBoard(BattleBoard* b)
-{
-	std::cout << "Game Board" << endl;
-	for (int i=0;i< b->R; i++)
-	{
-		
-		std::cout << i + 1;
-		std::cout << "  ";
-		for (int j=0; j< b->C; j++)
-		{
-			switch (tolower(b->board[i][j]))
-			{
-			case 'b':
-				{
-				setTextColor(9);
-				std::cout << b->board[i][j];
-				break;
-				}
-			case 'p':
-				{
-				setTextColor(10);
-				std::cout << b->board[i][j];
-				break;
-				}
-			case 'm':
-				{
-				setTextColor(14);
-				std::cout << b->board[i][j];
-				break;
-				}
-			case 'd':
-				{
-				setTextColor(12);
-				std::cout << b->board[i][j];
-				break;
-				}
-			default:
-				{
-				setTextColor(15);
-				std::cout << b->board[i][j];
-				break;
-				}
-			}
 
-		}
-		setTextColor(15);
-		std::cout << endl;
-	}
-		
-}
-void updateBoard(pair<int,int> placeToUpdate, AttackResult res)
-{
-	
-}
+
 
 int main(int argc, char **argv)
 {
-	bool quiteMode = false;
-	int delay = 1; //in miliseconds
+	
 	string path;
 	if (argc < 2)
 	{
@@ -321,20 +262,7 @@ int main(int argc, char **argv)
 		std::cout << "Wrong path:" + path << endl;
 		return -1;
 	}
-	//check if –quiet and -delay has recieved:
-	if (argc >= 3)
-	{
-		if (strcmp(argv[2],"–quiet") == 0)
-			quiteMode = true;
-	}
-	if (argc >= 4)
-	{
-		if (strcmp(argv[2] ,"-delay") == 0)
-		{
-			delay = stoi(argv[3]);
-		}
-	}
-		
+	
 	//path is valid, continue
 	vector<string> gameFiles;
 	getGameFiles(argv[1], gameFiles);
@@ -344,7 +272,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	return 	PlayGame(gameFiles, quiteMode, delay);
+	return 	PlayGame(gameFiles);
 
 
 }

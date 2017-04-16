@@ -28,6 +28,6 @@ void printFirstBoard(BattleBoard* b);
 * performing game steps and finish the game in case of victory or finished attack steps
 * gameFiles contains - sboard file, attack-a file,attack-b file by this order!
 */
-int PlayGame(vector<string> gameFiles, bool quietMode, int delay);
+int PlayGame(vector<string> gameFiles);
 
 
