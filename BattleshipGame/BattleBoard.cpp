@@ -1,5 +1,4 @@
 #include "BattleBoard.h"
-#include <set>
 #include <iostream>
 #include <ppltasks.h>
 
@@ -47,7 +46,7 @@ bool BattleBoard::isBoardValid()
 	int countA = 0;
 	int countB = 0;
 	int totalShape = 0;
-	std::set<pair<int, int>> checkedCells, temp;
+	set<pair<int, int>> checkedCells, temp;
 	bool allI, allJ;
 	bool badShape[8] = { false };
 	bool tooClose = false;
@@ -122,7 +121,7 @@ bool BattleBoard::isBoardValid()
 pair<int, int> BattleBoard::CalcScore()
 {
 	pair<int, int> scores = std::make_pair(0, 0);
-	std::set<Vessel*> seenVessels;
+	set<Vessel*> seenVessels;
 
 	for (auto const& element : this->ships)
 	{
@@ -143,7 +142,7 @@ int BattleBoard::CheckVictory()
 {
 	int winner = -1;
 	int countA = 0, countB = 0;
-	std::set<Vessel*> seenVessels;
+	set<Vessel*> seenVessels;
 
 	for (auto const& element : this->ships)
 	{

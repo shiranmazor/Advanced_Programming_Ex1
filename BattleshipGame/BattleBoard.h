@@ -7,8 +7,7 @@
 #include "Common.h"
 #include "IBattleshipGameAlgo.h"
 #include <string.h>
-#include <iostream>
-#include <map>
+#include <set>
 using namespace std;
 
 #define isPlayerChar(x, y) (x==A && (isupper(y) || isspace(y)) || (x==B && (islower(y) || isspace(y))))
@@ -20,9 +19,10 @@ using namespace std;
 #define isAlreadyHit(x) (x == '*' || x == '#')
 
 const char idx2ship[8] = { 'B', 'P', 'M', 'D', 'b', 'p', 'm', 'd' };
-const std::unordered_map<char, int> ship2idx = {
+const unordered_map<char, int> ship2idx = {
 	{ 'B', 0 },{ 'P', 1 },{ 'M', 2 },{ 'D', 3 },{ 'b', 4 },{ 'p', 5 },{ 'm', 6 },{ 'd', 7 },
 };
+
 class Vessel
 {
 public:
@@ -39,8 +39,8 @@ public:
 		else
 			this->player = B;
 	}
-
 };
+
 class BattleBoard
 {
 public:
@@ -48,9 +48,9 @@ public:
 	int C;
 	char** board;
 	int playerToolsNum;
-	std::unordered_map<string, Vessel*> ships;
+	unordered_map<string, Vessel*> ships;
 
-	//constructor
+	// constructor
 	BattleBoard(string boardFilePath, int R = 10, int C = 10):playerToolsNum(5)
 	{
 		ifstream boardFile(boardFilePath);
@@ -62,7 +62,7 @@ public:
 
 		if (boardFile.fail())
 		{
-			//error message for file not found
+			// error message for file not found
 			boardFile.close();
 		}
 
@@ -95,7 +95,7 @@ public:
 		this->R = R;
 		this->C = C;
 
-		//copy the init board to  new board member
+		// copy the init board to  new board member
 		this->board = new char*[this->R];
 		for (int i = 0; i < this->C; i++) this->board[i] = new char[this->C];
 
@@ -110,9 +110,14 @@ public:
 	{
 		if (this->board != NULL)
 		{
+			set<Vessel*> vessles;
+			
 			delete[] this->board;
+			
 			for (auto const& element : this->ships)
-				delete[] element.second; 
+				vessles.insert(element.second);
+			for (auto const& element : vessles) 
+				delete[] element;
 		}
 	}
 
