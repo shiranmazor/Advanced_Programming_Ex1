@@ -8,7 +8,7 @@
  *	0 - no direction (ship size 1 or adjecent ships error)
  *	1 - going right
  *	2 - going down 
-*/
+ */
 int _getShipDirection(BattleBoard* b, int i, int j)
 {
 	if (j != b->C - 1)
@@ -21,6 +21,9 @@ int _getShipDirection(BattleBoard* b, int i, int j)
 	return 0;
 }
 
+/*
+ * Recursively collect all adjacent cells containing the same symbol
+ */
 void _collect_ship(BattleBoard* b, int i, int j, std::set<pair<int, int>>* s)
 {
 	char curr = b->board[i][j];
@@ -36,31 +39,28 @@ void _collect_ship(BattleBoard* b, int i, int j, std::set<pair<int, int>>* s)
 
 /*
  *  Check if the board is valid and print relevant messages if it isn't, 
- *  while doing so, also initialize 'ships' Map containing board boxes 
+ *  while doing so, also initialize 'ships' Map containing board cells 
  *  leading to Vessel object representing the different Vessels on the board.
  */
 bool BattleBoard::isBoardValid()
 {
 	int countA = 0;
 	int countB = 0;
-	std::set<pair<int, int>> checkedBoxes, temp;
-	pair<int, int> box;
-	int dir, totalShape = 0;
+	int totalShape = 0;
+	std::set<pair<int, int>> checkedCells, temp;
+	bool allI, allJ;
 	bool badShape[8] = { false };
 	bool tooClose = false;
-	bool sizeGood, allI, allJ;
 	Vessel* currShip;
 
 	for (int i = 0; i < this->R; i++)
 	{
 		for (int j = 0; j < this->C; j++)
 		{
-			box = std::make_pair(i, j);
-
 			// ignore empty or already checked boxes (in case of full ship scan)
-			if (this->board[i][j] == ' ' || checkedBoxes.find(box) != checkedBoxes.end()) continue;
+			if (this->board[i][j] == ' ' || checkedCells.find(std::make_pair(i, j)) != checkedCells.end()) continue;
 
-			// check for ship shape and remove irregular shaped ships
+			// collect all adjacent cells contaning the same symbol
 			_collect_ship(this, i, j, &temp);
 			allI = true;
 			allJ = true;
@@ -69,90 +69,36 @@ bool BattleBoard::isBoardValid()
 				allI = element.first == i && allI;
 				allJ = element.second == j && allJ;
 			}
-			if (!allJ && !allI)
+
+			// determine ship shape and size
+			if ((!allJ && !allI) || temp.size() != getShipSize(this->board[i][j]))
 			{
 				badShape[ship2idx.at(this->board[i][j])] = true;
 				for (auto const& element : temp) 
-					this->board[element.first][element.second] = ' ';
-				temp.clear();
-				continue;
+					checkedCells.insert(element);
+					//this->board[element.first][element.second] = ' ';
 			}
-			temp.clear();
-
-			// found a ship, verify size and pther ships proximity 
-			checkedBoxes.insert(box);
-			currShip = new Vessel(this->board[i][j]);
-			this->ships[makeKey(box)] = currShip;
-			sizeGood = false;
-			dir = _getShipDirection(this, i, j);
-
-			for (int l = 0; l <= getShipSize(this->board[i][j]); l++) {
-				if (dir == 1)
-				{
-					if (l == getShipSize(this->board[i][j]))
-					{
-						sizeGood = true;
-						while (j + l < this->C && this->board[i][j + l] == this->board[i][j])
-						{
-							box = std::make_pair(i, j + l);
-							checkedBoxes.insert(box); 
-							l++;
-
-							badShape[ship2idx.at(this->board[i][j])] = true;
-							sizeGood = false;
-						}
-					}
-					else if (j + l == this->C || this->board[i][j + l] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
-					else {
-						box = std::make_pair(i, j + l);
-						checkedBoxes.insert(box);
-						this->ships[makeKey(box)] = currShip;
-					}
-
-					if (i < this->R - 1 && this->board[i + 1][j + l] != ' ') tooClose = true;
-				}
-				else if (dir == 2)
-				{
-					if (l == getShipSize(this->board[i][j]))
-					{
-						sizeGood = true;
-						while (i + l < this->R && this->board[i + l][j] == this->board[i][j])
-						{
-							box = std::make_pair(i + l, j);
-							checkedBoxes.insert(box);
-							l++;
-
-							badShape[ship2idx.at(this->board[i][j])] = true;
-							sizeGood = false;
-						}
-
-						if (i + l < this->R && this->board[i + l][j] != ' ') tooClose = true;
-					}
-					else if (i + l == this->R || this->board[i + l][j] != this->board[i][j]) badShape[ship2idx.at(this->board[i][j])] = true;
-					else
-					{
-						box = std::make_pair(i + l, j);
-						checkedBoxes.insert(box);
-						this->ships[makeKey(box)] = currShip;
-						if ((j > 0 && this->board[i + l][j - 1] != ' ') || j + 1 < this->C && this->board[i + l][j + 1] != ' ') tooClose = true;
-					}
-
-				}
-				else // dir == 0
-				{
-					if (getShipSize(this->board[i][j]) != 1) badShape[ship2idx.at(this->board[i][j])] = true;
-					else sizeGood = true;
-
-					if (i < this->R - 1 && this->board[i + 1][j] != ' ') tooClose = true;
-					if (j < this->C - 1 && this->board[i][j + 1] != ' ') tooClose = true;
-				}
-			}
-
-			if (sizeGood)
+			else // ship shape and size are correct
 			{
 				if (isPlayerChar(A, this->board[i][j])) countA++;
 				else countB++;
+
+				// add ship to the game board 'ships' Map and check for adjacent ships
+				currShip = new Vessel(this->board[i][j]);
+				for (auto const& element : temp)
+				{
+					checkedCells.insert(element);
+					this->ships[makeKey(element)] = currShip;
+					if ((element.first > 0 && this->board[element.first - 1][element.second] != ' ' && this->board[element.first - 1][element.second] != this->board[i][j]) ||
+						(element.second > 0 && this->board[element.first][element.second - 1] != ' ' && this->board[element.first][element.second - 1] != this->board[i][j]) ||
+						(element.first < this->R - 1 && this->board[element.first + 1][element.second] != ' ' && this->board[element.first + 1][element.second] != this->board[i][j]) ||
+						(element.second < this->C - 1 && this->board[element.first][element.second + 1] != ' ' && this->board[element.first][element.second + 1] != this->board[i][j]))
+					{
+						tooClose = true;
+					}
+				}
 			}
+			temp.clear();
 		}
 	}
 
@@ -169,7 +115,6 @@ bool BattleBoard::isBoardValid()
 	if (countB < this->playerToolsNum) cout << "Too few ships for player B" << endl;
 
 	if (tooClose) cout << "Adjacent Ships on Board" << endl;
-
 
 	return (countA == this->playerToolsNum && countB == this->playerToolsNum && !tooClose && totalShape == 0);
 }
