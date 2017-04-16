@@ -40,6 +40,7 @@ int getShipSize(char C)
 	if (tolower(C) == 'p') return 2;
 	if (tolower(C) == 'm') return 3;
 	if (tolower(C) == 'd') return 4;
+	return 0;//default case
 }
 
 int getShipScore(char C)
@@ -48,6 +49,7 @@ int getShipScore(char C)
 	if (tolower(C) == 'p') return 3;
 	if (tolower(C) == 'm') return 7;
 	if (tolower(C) == 'd') return 8;
+	return 0;//default case
 }
 
 bool isCharValid(char C)

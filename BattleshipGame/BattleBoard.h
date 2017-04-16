@@ -70,7 +70,7 @@ public:
 		{
 			std::getline(boardFile, temp);
 			// copy C chars
-			if (temp.length() >= this->C)
+			if (int(temp.length()) >= this->C)
 				temp.copy(this->board[i], this->C);
 
 			else {

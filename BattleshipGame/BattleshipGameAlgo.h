@@ -29,11 +29,11 @@ public:
 		this->playerName = playerName;
 		this->attackFilePath = attackFilePath;
 		//load attack file to file handle assuming file path is correct:
-		attackFile.open(attackFilePath);
-		if (attackFile.fail())
+		this->attackFile.open(attackFilePath);
+		if (this->attackFile.fail())
 		{
 			//error message for file not found
-			attackFile.close();
+			this->attackFile.close();
 
 		}
 
@@ -42,6 +42,8 @@ public:
 	{
 		if (playerBoard != nullptr)
 			delete playerBoard;
+		//close handle to attack file
+		this->attackFile.close();
 	}
 
 	virtual void setBoard(const char** board, int numRows, int numCols) override;

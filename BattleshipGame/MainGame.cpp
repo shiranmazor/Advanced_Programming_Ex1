@@ -1,6 +1,22 @@
 #include "BattleshipGameAlgo.h"
 #include "Game.h"
 
+void gotoxy(short col, short row)
+
+{
+	static HANDLE h = NULL;
+	if (!h)
+		h = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD c = { col, row };
+	SetConsoleCursorPosition(h, c);
+}
+void setTextColor(int color)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
+}
+
+
 /*
 * get current working directory path
 */
@@ -197,10 +213,9 @@ int PlayGame(vector<string> gameFiles)
 		if (moveRes == AttackResult::Miss || (moveRes != AttackResult::Miss && 
 			isSelfHit(currentPlayer->playerName,mainBoard->board[attackMove.first][attackMove.second]))
 			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
-
+		
 	}
 
-	
 	if (victory)
 	{
 		if (winPlayer == A)
@@ -228,8 +243,10 @@ int PlayGame(vector<string> gameFiles)
 }
 
 
+
 int main(int argc, char **argv)
 {
+	
 	string path;
 	if (argc < 2)
 	{
@@ -242,15 +259,16 @@ int main(int argc, char **argv)
 		path = argv[1];
 	if (!dirExists(path))
 	{
-		cout << "Wrong path:" + path << endl;
+		std::cout << "Wrong path:" + path << endl;
 		return -1;
 	}
+	
 	//path is valid, continue
 	vector<string> gameFiles;
 	getGameFiles(argv[1], gameFiles);
 	if (!CheckValidPath(gameFiles, path))
 	{
-		cout << "Error game files are missing, Exiting game" << endl;
+		std::cout << "Error game files are missing, Exiting game" << endl;
 		return -1;
 	}
 
