@@ -134,7 +134,7 @@ bool BattleBoard::isBoardValid()
 						box = std::make_pair(i + l, j);
 						checkedBoxes.insert(box);
 						this->ships[makeKey(box)] = currShip;
-						if ((j > 0 && this->board[i + l][j - 1] != ' ') || this->board[i + l][j + 1] != ' ') tooClose = true;
+						if ((j > 0 && this->board[i + l][j - 1] != ' ') || j + 1 < this->C && this->board[i + l][j + 1] != ' ') tooClose = true;
 					}
 
 				}
