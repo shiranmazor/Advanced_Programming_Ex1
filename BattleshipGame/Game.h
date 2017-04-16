@@ -21,9 +21,8 @@ using namespace std;
 bool CheckValidPath(vector<string> gameFiles, string path);
 void getGameFiles(string folder, vector<string> & gameFiles);
 bool dirExists(const std::string& dirName_in);
-void gotoxy(short col, short row);
-void setTextColor(int color);
-void printFirstBoard(BattleBoard* b);
+void gotoxy(short col, short row); //added for future using
+void setTextColor(int color);//added for future using
 /*
 * performing game steps and finish the game in case of victory or finished attack steps
 * gameFiles contains - sboard file, attack-a file,attack-b file by this order!
