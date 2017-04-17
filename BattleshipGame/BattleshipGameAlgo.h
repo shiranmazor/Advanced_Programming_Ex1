@@ -22,6 +22,9 @@ public:
 	string attackFilePath;
 	ifstream attackFile;
 
+	// Blocking Copy and Assignment
+	BattleshipGameAlgo(const BattleshipGameAlgo&) = delete;
+	BattleshipGameAlgo& operator = (const BattleshipGameAlgo&) = delete;
 
 	//constructor
 	BattleshipGameAlgo(Player playerName, string attackFilePath)

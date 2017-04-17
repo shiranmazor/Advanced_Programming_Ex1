@@ -2,7 +2,6 @@
 #include "Game.h"
 
 void gotoxy(short col, short row)
-
 {
 	static HANDLE h = NULL;
 	if (!h)
@@ -208,7 +207,6 @@ int PlayGame(vector<string> gameFiles)
 		}
 
 		// if Miss or self hit next turn is of the other player.
-
 		if (moveRes == AttackResult::Miss || (moveRes != AttackResult::Miss && 
 			isSelfHit(currentPlayer->playerName,mainBoard->board[attackMove.first][attackMove.second]))
 			currentPlayer = swapPlayer(currentPlayer, playerA, playerB);
@@ -228,12 +226,12 @@ int PlayGame(vector<string> gameFiles)
 	cout << "Player A: " << gameScore.first << endl;
 	cout << "Player B: " << gameScore.second << endl;
 
-	//outside loop
+	//outside loop, avoid memory leak
 	if (playerBoardA != NULL)
-		delete[] playerBoardA;//avoid memory leak
-							//outside loop
+		delete[] playerBoardA;
 	if (playerBoardB != NULL)
-		delete[] playerBoardB;//avoid memory leak
+		delete[] playerBoardB;
+
 	//delete objects
 	delete playerA;
 	delete playerB;
