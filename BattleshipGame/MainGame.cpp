@@ -107,7 +107,6 @@ void getGameFiles(string folder, vector<string> & gameFiles)
 			gameFiles.push_back(fullPath);
 		}
 	}
-
 }
 
 bool CheckValidPath(vector<string> gameFiles, string path)
