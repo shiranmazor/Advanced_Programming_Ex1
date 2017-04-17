@@ -31,10 +31,6 @@ public:
 	int hitNum;
 	Player player;
 
-	// Blocking Copy and Assignment
-	Vessel(const Vessel&) = delete;
-	Vessel& operator = (const Vessel&) = delete;
-
 	Vessel(char type):hitNum(0)
 	{
 		this->type = type;
