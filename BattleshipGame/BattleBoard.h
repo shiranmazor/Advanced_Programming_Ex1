@@ -30,6 +30,11 @@ public:
 	int size;
 	int hitNum;
 	Player player;
+
+	// Blocking Copy and Assignment
+	Vessel(const Vessel&) = delete;
+	Vessel& operator = (const Vessel&) = delete;
+
 	Vessel(char type):hitNum(0)
 	{
 		this->type = type;
@@ -49,6 +54,10 @@ public:
 	char** board;
 	int playerToolsNum;
 	unordered_map<string, Vessel*> ships;
+
+	// Blocking Copy and Assignment
+	BattleBoard(const BattleBoard&) = delete;
+	BattleBoard& operator = (const BattleBoard&) = delete;
 
 	// constructor
 	BattleBoard(string boardFilePath, int R = 10, int C = 10):playerToolsNum(5)
